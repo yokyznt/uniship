@@ -1,0 +1,6 @@
+-keepattributes *Annotation*, InnerClasses, Signature
+-keep,includedescriptorclasses class com.yokis.uniship.**$$serializer { *; }
+-keepclassmembers class com.yokis.uniship.** { *** Companion; }
+-keepclasseswithmembers class com.yokis.uniship.** { kotlinx.serialization.KSerializer serializer(...); }
+-dontwarn org.jspecify.**
+-dontwarn com.google.re2j.**
