@@ -1,0 +1,13 @@
+.gradle/
+build/
+local.properties
+.idea/
+*.iml
+.kotlin/
+app/google-services.json
+keystore.properties
+*.jks
+node_modules/
+.vercel/
+.env*
+.impeccable/hook.cache.json
