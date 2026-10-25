@@ -64,6 +64,7 @@ object Origen {
     const val MERCADO_LIBRE = "mercadolibre"
     const val ALIEXPRESS = "aliexpress"
     const val TEMU = "temu"
+    const val AMAZON = "amazon"
     const val COMPARTIDO = "compartido"
     const val PORTAPAPELES = "portapapeles"
 }

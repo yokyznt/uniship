@@ -84,6 +84,7 @@ object Galletas : okhttp3.CookieJar {
 }
 
 object Clasificador {
+    fun sinAcentos(t: String) = base(t)
     private fun base(t: String) = Normalizer.normalize(t.lowercase(Locale.ROOT), Normalizer.Form.NFD).replace(Regex("\\p{M}+"), "")
 
     private val reglas = listOf(

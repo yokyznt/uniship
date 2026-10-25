@@ -127,12 +127,12 @@ fun Lista(abrir: (Long) -> Unit, agregar: () -> Unit, ajustes: () -> Unit, verPr
                     Pestanas(pestana, enCamino?.size ?: 0, terminados.size) { pestana = it }
                 }
                 if (pestana == 0) {
-                    val caducada = com.yokis.uniship.tiendas.Tienda.entries.firstOrNull { com.yokis.uniship.tiendas.Tiendas.caducada(it) }
-                    val ninguna = com.yokis.uniship.tiendas.Tienda.entries.none { com.yokis.uniship.tiendas.Tiendas.conectada(it) }
+                    val caducada = com.yokis.uniship.tiendas.Tienda.visibles.firstOrNull { com.yokis.uniship.tiendas.Tiendas.caducada(it) }
+                    val ninguna = com.yokis.uniship.tiendas.Tienda.visibles.none { com.yokis.uniship.tiendas.Tiendas.conectada(it) }
                     if (caducada != null) item {
                         Aviso(Icons.Outlined.ShoppingBag, "Vuelve a entrar a ${caducada.nombre}", "Tu sesión caducó y ya no puedo ver tus pedidos nuevos.", "Entrar") { com.yokis.uniship.tiendas.ConectarTienda.abrir(ctx, caducada) }
                     } else if (ninguna) item {
-                        Aviso(Icons.Outlined.ShoppingBag, "Conecta tus tiendas", "Entra una vez a AliExpress o Temu y tus pedidos aparecen solos, con su guía.", "Conectar") { com.yokis.uniship.tiendas.ConectarTienda.abrir(ctx, com.yokis.uniship.tiendas.Tienda.ALIEXPRESS) }
+                        Aviso(Icons.Outlined.ShoppingBag, "Conecta tus tiendas", "Entra una vez a AliExpress o Amazon y tus pedidos aparecen solos, con su guía.", "Conectar") { ajustes() }
                     }
                     if (!lector) item {
                         Aviso(Icons.Outlined.NotificationsActive, "Detecta guías nuevas solas", "Con el lector de notificaciones, cada aviso de envío crea o actualiza tu paquete.", "Activar") { Permisos.abrirLector(ctx) }
