@@ -34,6 +34,7 @@ class Rastreador(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx, 
         }
         if (id <= 0) {
             runCatching { MercadoLibre.sincronizar(applicationContext) }
+            runCatching { com.yokis.uniship.tiendas.Tiendas.sincronizar(applicationContext) }
             runCatching { Nube.respaldoAutomatico() }
         }
         return Result.success()

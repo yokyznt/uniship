@@ -29,8 +29,8 @@ android {
         applicationId = "com.yokis.uniship"
         minSdk = 26
         targetSdk = 36
-        versionCode = 2
-        versionName = "1.1.0"
+        versionCode = 3
+        versionName = "1.2.0"
         buildConfigField("String", "SERVER_URL", "\"${cfg("UNISHIP_SERVER", "https://uniship-xi.vercel.app")}\"")
         buildConfigField("String", "ML_CLIENT_ID", "\"${cfg("ML_CLIENT_ID")}\"")
         buildConfigField("boolean", "FIREBASE", firebase.toString())

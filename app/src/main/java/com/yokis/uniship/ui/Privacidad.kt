@@ -25,8 +25,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 object AvisoPrivacidad {
-    const val VERSION = 1
-    const val ACTUALIZADO = "24 de octubre de 2026"
+    const val VERSION = 3
+    const val ACTUALIZADO = "25 de octubre de 2026"
 
     data class Apartado(val titulo: String, val parrafos: List<String> = emptyList(), val puntos: List<String> = emptyList())
 
@@ -50,6 +50,7 @@ object AvisoPrivacidad {
                 "Tus paquetes: número de guía, paquetería, tienda, nombre que les pongas y sus movimientos.",
                 "Los últimos 4 dígitos de tu celular, solo si los escribes para consultar J&T Express.",
                 "La sesión de Mercado Libre, solo si la conectas.",
+                "Las sesiones de AliExpress y Temu, solo si entras a ellas desde UniShip. Se quedan en tu teléfono como en un navegador y nunca se mandan a nuestro servidor.",
                 "La base de datos queda fuera del respaldo automático de Android para que no se copie a la nube sin que lo decidas."
             )
         ),
@@ -58,6 +59,7 @@ object AvisoPrivacidad {
             puntos = listOf(
                 "El número de guía, a la página pública de rastreo de su paquetería (J&T, iMile, Estafeta, DHL, FedEx, 99minutos, Paquetexpress, Correos de México o Redpack). Es lo mismo que pasa cuando lo buscas en su sitio. Para J&T también se mandan los 4 dígitos de tu celular, porque así lo pide J&T.",
                 "Si conectas Mercado Libre: UniShip consulta tus compras y envíos con la API oficial de Mercado Libre, usando el permiso que tú das. Nuestro servidor solo interviene para canjear el permiso y nunca guarda tus compras.",
+                "Si conectas AliExpress o Temu: UniShip consulta desde tu teléfono la misma página de pedidos que ves en su sitio, solo para leer el estado, la paquetería y la guía de tus envíos. No compra, no cancela y no cambia nada. Tu contraseña la recibe la tienda, no UniShip.",
                 "Si inicias sesión con Google: se sube una copia de tus paquetes a nuestro servidor (Vercel y Upstash), ligada a tu cuenta, para que puedas recuperarla en otro teléfono. No guardamos tu correo ni tus contactos."
             )
         ),
