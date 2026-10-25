@@ -170,10 +170,23 @@ private fun Encabezado(p: Paquete) {
     val portapapeles = LocalClipboardManager.current
     Column {
         val origen = listOfNotNull(p.tienda, Registro.porId(p.paqueteria)?.nombre).distinct().joinToString(" · ")
-        if (origen.isNotEmpty()) Text(origen, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        if (origen.isNotEmpty()) Text(origen, style = MaterialTheme.typography.labelMedium, color = Paleta.naranjaTexto)
         Text(p.titulo, style = MaterialTheme.typography.headlineSmall)
-        Spacer(Modifier.height(10.dp))
-        Etiqueta(p.estado)
+        Spacer(Modifier.height(14.dp))
+        androidx.compose.foundation.layout.Box(
+            Modifier.fillMaxWidth().background(Paleta.blanco, androidx.compose.foundation.shape.RoundedCornerShape(22.dp)).padding(16.dp)
+        ) {
+            Column {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Etiqueta(p.estado)
+                    Spacer(Modifier.weight(1f))
+                    p.entregaEstimada?.let { Text("Llega $it", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant) }
+                }
+                Spacer(Modifier.height(14.dp))
+                Progreso(p.estado)
+            }
+        }
+        if (p.paqueteria == "jt") CelularJt()
         if (p.guia != null) {
             Spacer(Modifier.height(14.dp))
             Row(
@@ -191,11 +204,39 @@ private fun Encabezado(p: Paquete) {
 }
 
 @Composable
+private fun CelularJt() {
+    val guardado by UniShipApp.prefs.celular.collectAsState(initial = "")
+    if (guardado.length == 4) return
+    val alcance = rememberCoroutineScope()
+    var cel by remember { mutableStateOf("") }
+    Spacer(Modifier.height(12.dp))
+    Column(Modifier.fillMaxWidth().background(Paleta.durazno, androidx.compose.foundation.shape.RoundedCornerShape(20.dp)).padding(16.dp)) {
+        Text("J&T pide los últimos 4 dígitos de tu celular", style = MaterialTheme.typography.titleMedium)
+        Text("Los del número que diste al comprar. Se guardan solo en este teléfono.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Spacer(Modifier.height(8.dp))
+        OutlinedTextField(
+            value = cel,
+            onValueChange = { v ->
+                cel = v.filter { it.isDigit() }.take(4)
+                if (cel.length == 4) alcance.launch {
+                    UniShipApp.prefs.guardarCelular(cel)
+                    Rastreador.ahora(UniShipApp.instancia)
+                }
+            },
+            placeholder = { Text("1234") },
+            singleLine = true,
+            keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(keyboardType = androidx.compose.ui.text.input.KeyboardType.NumberPassword),
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
+@Composable
 private fun Paso(e: Evento, primero: Boolean, ultimo: Boolean) {
     Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min)) {
         Column(Modifier.width(24.dp).fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally) {
-            Box(Modifier.width(2.dp).height(6.dp).background(if (primero) Paleta.crema else MaterialTheme.colorScheme.outline))
-            Box(Modifier.size(if (primero) 14.dp else 10.dp).background(if (primero) MaterialTheme.colorScheme.primary else Paleta.cafeSuave, CircleShape))
+            Box(Modifier.width(2.dp).height(6.dp).background(if (primero) Paleta.fondo else MaterialTheme.colorScheme.outline))
+            Box(Modifier.size(if (primero) 14.dp else 10.dp).background(if (primero) MaterialTheme.colorScheme.primary else Paleta.naranjaSuave, CircleShape))
             if (!ultimo) Box(Modifier.width(2.dp).weight(1f).background(MaterialTheme.colorScheme.outline))
         }
         Spacer(Modifier.width(12.dp))

@@ -122,6 +122,19 @@ fun Ajustes(actividad: MainActivity, volver: () -> Unit, verPrivacidad: () -> Un
                     modifier = Modifier.fillMaxWidth()
                 )
             }
+            Seccion("Tiendas") {
+                com.yokis.uniship.tiendas.Tienda.entries.forEachIndexed { i, t ->
+                    if (i > 0) HorizontalDivider()
+                    val conectada = com.yokis.uniship.tiendas.Tiendas.conectada(t) && !com.yokis.uniship.tiendas.Tiendas.caducada(t)
+                    when {
+                        conectada -> Fila(t.nombre, "Conectada: tus pedidos se leen solos", "Salir") {
+                            com.yokis.uniship.tiendas.Tiendas.desconectar(t); aviso("${t.nombre} desconectada")
+                        }
+                        com.yokis.uniship.tiendas.Tiendas.caducada(t) -> Fila(t.nombre, "Tu sesión caducó, vuelve a entrar", "Entrar") { com.yokis.uniship.tiendas.ConectarTienda.abrir(ctx, t) }
+                        else -> Fila(t.nombre, "Entra una vez y UniShip trae tus pedidos y guías", "Conectar") { com.yokis.uniship.tiendas.ConectarTienda.abrir(ctx, t) }
+                    }
+                }
+            }
             Seccion("Mercado Libre") {
                 when {
                     !MercadoLibre.configurado() -> Text("Esta versión todavía no tiene la conexión con Mercado Libre configurada.", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -188,6 +201,7 @@ fun Ajustes(actividad: MainActivity, volver: () -> Unit, verPrivacidad: () -> Un
                     if (Nube.usuario != null) { runCatching { Nube.borrar() }; Nube.cerrar(ctx); usuario = null }
                     UniShipApp.repo.borrarTodo()
                     UniShipApp.prefs.borrarTodo()
+                    com.yokis.uniship.tiendas.Tiendas.desconectarTodas()
                     androidx.core.app.NotificationManagerCompat.from(ctx).cancelAll()
                     "Listo, se borró todo"
                 }
@@ -205,7 +219,7 @@ fun Ajustes(actividad: MainActivity, volver: () -> Unit, verPrivacidad: () -> Un
 }
 
 fun abrirWeb(ctx: android.content.Context, uri: Uri) {
-    val colores = CustomTabColorSchemeParams.Builder().setToolbarColor(Paleta.crema.toArgb()).build()
+    val colores = CustomTabColorSchemeParams.Builder().setToolbarColor(Paleta.fondo.toArgb()).build()
     runCatching { CustomTabsIntent.Builder().setDefaultColorSchemeParams(colores).build().launchUrl(ctx, uri) }
         .onFailure { ctx.startActivity(Intent(Intent.ACTION_VIEW, uri)) }
 }

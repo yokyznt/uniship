@@ -34,7 +34,8 @@ data class Paquete(
     val origen: String = Origen.MANUAL,
     val archivado: Boolean = false,
     val pedidoExterno: String? = null,
-    val fallos: Int = 0
+    val fallos: Int = 0,
+    val entregaEstimada: String? = null
 ) {
     val activo get() = !archivado && estado != Estado.ENTREGADO
 }
@@ -61,6 +62,10 @@ object Origen {
     const val ESCANEO = "escaneo"
     const val NOTIFICACION = "notificacion"
     const val MERCADO_LIBRE = "mercadolibre"
+    const val ALIEXPRESS = "aliexpress"
+    const val TEMU = "temu"
+    const val COMPARTIDO = "compartido"
+    const val PORTAPAPELES = "portapapeles"
 }
 
 object Fuente {
@@ -68,6 +73,7 @@ object Fuente {
     const val APP = "app"
     const val CORREO = "correo"
     const val MERCADO_LIBRE = "mercadolibre"
+    const val TIENDA = "tienda"
 }
 
 @Serializable

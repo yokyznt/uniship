@@ -72,12 +72,18 @@ interface EventoDao {
     suspend fun insertarTodos(e: List<Evento>)
 }
 
-@Database(entities = [Paquete::class, Evento::class], version = 1, exportSchema = true)
+@Database(entities = [Paquete::class, Evento::class], version = 2, exportSchema = true)
 abstract class Db : RoomDatabase() {
     abstract fun paquetes(): PaqueteDao
     abstract fun eventos(): EventoDao
 
     companion object {
-        fun crear(ctx: Context) = Room.databaseBuilder(ctx, Db::class.java, "uniship.db").build()
+        private val de1a2 = object : androidx.room.migration.Migration(1, 2) {
+            override fun migrate(db: androidx.sqlite.db.SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE paquetes ADD COLUMN entregaEstimada TEXT")
+            }
+        }
+
+        fun crear(ctx: Context) = Room.databaseBuilder(ctx, Db::class.java, "uniship.db").addMigrations(de1a2).build()
     }
 }

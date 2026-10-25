@@ -41,7 +41,7 @@ object Notificador {
         orden.take(5).forEach { estilo.addLine(linea(it)) }
         val n = NotificationCompat.Builder(ctx, CANAL)
             .setSmallIcon(R.drawable.ic_notificacion)
-            .setColor(0xFFE07A2F.toInt())
+            .setColor(0xFFF26B12.toInt())
             .setContentTitle(titulo(p, ultimo))
             .setContentText(linea(ultimo))
             .setSubText(p.titulo)

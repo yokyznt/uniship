@@ -8,50 +8,62 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.yokis.uniship.R
 import com.yokis.uniship.data.Estado
 
 object Paleta {
-    val crema = Color(0xFFFFFBF5)
+    val fondo = Color(0xFFFFF8F1)
     val blanco = Color(0xFFFFFFFF)
-    val arena = Color(0xFFF6EDE3)
-    val naranja = Color(0xFFE07A2F)
-    val naranjaSuave = Color(0xFFFBE3D0)
-    val naranjaTexto = Color(0xFFA9501A)
-    val cafe = Color(0xFF6B4226)
-    val cafeSuave = Color(0xFFEFE2D6)
-    val tinta = Color(0xFF3B2416)
-    val tintaSuave = Color(0xFF7D604C)
-    val borde = Color(0xFFEADBCB)
-    val rojo = Color(0xFFB3261E)
-    val rojoSuave = Color(0xFFF9DEDC)
-    val verde = Color(0xFF3F6B2A)
-    val verdeSuave = Color(0xFFE3EDD9)
+    val arena = Color(0xFFFFF0E2)
+    val naranja = Color(0xFFF26B12)
+    val naranjaFuerte = Color(0xFFE05A00)
+    val naranjaSuave = Color(0xFFFFE2C9)
+    val naranjaTexto = Color(0xFFB04700)
+    val durazno = Color(0xFFFFF4EA)
+    val tinta = Color(0xFF2A2522)
+    val tintaSuave = Color(0xFF6E6560)
+    val borde = Color(0xFFF4E1D0)
+    val gris = Color(0xFFF2EEEA)
+    val rojo = Color(0xFFC62828)
+    val rojoSuave = Color(0xFFFDE2E0)
+    val verde = Color(0xFF2E7D32)
+    val verdeSuave = Color(0xFFE2F3E1)
 }
 
+val Nunito = FontFamily(
+    Font(R.font.nunito_400, FontWeight.Normal),
+    Font(R.font.nunito_500, FontWeight.Medium),
+    Font(R.font.nunito_600, FontWeight.SemiBold),
+    Font(R.font.nunito_700, FontWeight.Bold),
+    Font(R.font.nunito_800, FontWeight.ExtraBold)
+)
+
 private val esquema = lightColorScheme(
-    primary = Paleta.naranja,
-    onPrimary = Paleta.tinta,
+    primary = Paleta.naranjaFuerte,
+    onPrimary = Paleta.blanco,
     primaryContainer = Paleta.naranjaSuave,
-    onPrimaryContainer = Paleta.tinta,
-    secondary = Paleta.cafe,
+    onPrimaryContainer = Paleta.naranjaTexto,
+    secondary = Paleta.naranjaTexto,
     onSecondary = Paleta.blanco,
     secondaryContainer = Paleta.naranjaSuave,
-    onSecondaryContainer = Paleta.tinta,
-    tertiary = Paleta.cafe,
-    background = Paleta.crema,
+    onSecondaryContainer = Paleta.naranjaTexto,
+    tertiary = Paleta.naranja,
+    background = Paleta.fondo,
     onBackground = Paleta.tinta,
-    surface = Paleta.crema,
+    surface = Paleta.fondo,
     onSurface = Paleta.tinta,
     surfaceVariant = Paleta.arena,
     onSurfaceVariant = Paleta.tintaSuave,
     surfaceContainerLowest = Paleta.blanco,
     surfaceContainerLow = Paleta.blanco,
-    surfaceContainer = Paleta.arena,
-    surfaceContainerHigh = Paleta.arena,
-    surfaceContainerHighest = Paleta.cafeSuave,
+    surfaceContainer = Paleta.blanco,
+    surfaceContainerHigh = Paleta.blanco,
+    surfaceContainerHighest = Paleta.arena,
     outline = Paleta.borde,
     outlineVariant = Paleta.borde,
     error = Paleta.rojo,
@@ -59,22 +71,28 @@ private val esquema = lightColorScheme(
 )
 
 private val base = Typography()
+private fun TextStyle.n(peso: FontWeight, color: Color = Color.Unspecified) = copy(fontFamily = Nunito, fontWeight = peso, color = color)
+
 private val tipografia = Typography(
-    headlineLarge = base.headlineLarge.copy(fontWeight = FontWeight.Bold, color = Paleta.cafe, letterSpacing = (-0.5).sp),
-    headlineSmall = base.headlineSmall.copy(fontWeight = FontWeight.SemiBold, color = Paleta.cafe),
-    titleLarge = base.titleLarge.copy(fontWeight = FontWeight.SemiBold, color = Paleta.cafe),
-    titleMedium = base.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-    titleSmall = base.titleSmall.copy(fontWeight = FontWeight.SemiBold, color = Paleta.cafe),
-    labelMedium = base.labelMedium.copy(fontWeight = FontWeight.Medium),
-    bodyLarge = base.bodyLarge,
-    bodyMedium = base.bodyMedium,
-    bodySmall = base.bodySmall
+    displaySmall = base.displaySmall.n(FontWeight.ExtraBold, Paleta.tinta),
+    headlineLarge = base.headlineLarge.n(FontWeight.ExtraBold, Paleta.tinta).copy(letterSpacing = (-0.5).sp),
+    headlineMedium = base.headlineMedium.n(FontWeight.ExtraBold, Paleta.tinta),
+    headlineSmall = base.headlineSmall.n(FontWeight.ExtraBold, Paleta.tinta),
+    titleLarge = base.titleLarge.n(FontWeight.ExtraBold, Paleta.tinta),
+    titleMedium = base.titleMedium.n(FontWeight.Bold),
+    titleSmall = base.titleSmall.n(FontWeight.Bold, Paleta.naranjaTexto),
+    bodyLarge = base.bodyLarge.n(FontWeight.Medium),
+    bodyMedium = base.bodyMedium.n(FontWeight.Medium),
+    bodySmall = base.bodySmall.n(FontWeight.Medium),
+    labelLarge = base.labelLarge.n(FontWeight.Bold).copy(fontSize = 16.sp),
+    labelMedium = base.labelMedium.n(FontWeight.Bold),
+    labelSmall = base.labelSmall.n(FontWeight.Bold)
 )
 
 private val formas = Shapes(
-    small = RoundedCornerShape(8.dp),
-    medium = RoundedCornerShape(14.dp),
-    large = RoundedCornerShape(20.dp)
+    small = RoundedCornerShape(10.dp),
+    medium = RoundedCornerShape(18.dp),
+    large = RoundedCornerShape(26.dp)
 )
 
 @Composable
@@ -85,11 +103,18 @@ fun UniShipTema(contenido: @Composable () -> Unit) {
 data class ColorEstado(val fondo: Color, val texto: Color)
 
 fun colorDe(e: Estado) = when (e) {
-    Estado.EN_REPARTO -> ColorEstado(Paleta.naranjaSuave, Paleta.naranjaTexto)
-    Estado.EN_TRANSITO -> ColorEstado(Paleta.cafeSuave, Paleta.cafe)
+    Estado.EN_REPARTO -> ColorEstado(Paleta.naranja, Paleta.blanco)
+    Estado.EN_TRANSITO -> ColorEstado(Paleta.naranjaSuave, Paleta.naranjaTexto)
     Estado.ENTREGADO -> ColorEstado(Paleta.verdeSuave, Paleta.verde)
     Estado.INCIDENCIA -> ColorEstado(Paleta.rojoSuave, Paleta.rojo)
-    Estado.PENDIENTE, Estado.SIN_DATOS -> ColorEstado(Paleta.arena, Paleta.tintaSuave)
+    Estado.PENDIENTE, Estado.SIN_DATOS -> ColorEstado(Paleta.gris, Paleta.tintaSuave)
 }
 
-val estiloMono = TextStyle(fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace, fontSize = 14.sp, letterSpacing = 0.5.sp)
+fun pasoDe(e: Estado) = when (e) {
+    Estado.PENDIENTE, Estado.SIN_DATOS -> 0
+    Estado.EN_TRANSITO, Estado.INCIDENCIA -> 1
+    Estado.EN_REPARTO -> 2
+    Estado.ENTREGADO -> 3
+}
+
+val estiloMono = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 14.sp, letterSpacing = 0.5.sp)

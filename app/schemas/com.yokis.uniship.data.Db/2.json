@@ -1,0 +1,221 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 2,
+    "identityHash": "e53f21d2d513aaa631522f3c27d2cc33",
+    "entities": [
+      {
+        "tableName": "paquetes",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `guia` TEXT, `paqueteria` TEXT, `tienda` TEXT, `titulo` TEXT NOT NULL, `estado` TEXT NOT NULL, `ultimoEvento` TEXT, `ultimaUbicacion` TEXT, `actualizado` INTEGER NOT NULL, `creado` INTEGER NOT NULL, `origen` TEXT NOT NULL, `archivado` INTEGER NOT NULL, `pedidoExterno` TEXT, `fallos` INTEGER NOT NULL, `entregaEstimada` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "guia",
+            "columnName": "guia",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "paqueteria",
+            "columnName": "paqueteria",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "tienda",
+            "columnName": "tienda",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "titulo",
+            "columnName": "titulo",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "estado",
+            "columnName": "estado",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ultimoEvento",
+            "columnName": "ultimoEvento",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "ultimaUbicacion",
+            "columnName": "ultimaUbicacion",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "actualizado",
+            "columnName": "actualizado",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "creado",
+            "columnName": "creado",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "origen",
+            "columnName": "origen",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "archivado",
+            "columnName": "archivado",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pedidoExterno",
+            "columnName": "pedidoExterno",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "fallos",
+            "columnName": "fallos",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "entregaEstimada",
+            "columnName": "entregaEstimada",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_paquetes_guia",
+            "unique": true,
+            "columnNames": [
+              "guia"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_paquetes_guia` ON `${TABLE_NAME}` (`guia`)"
+          },
+          {
+            "name": "index_paquetes_pedidoExterno",
+            "unique": true,
+            "columnNames": [
+              "pedidoExterno"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_paquetes_pedidoExterno` ON `${TABLE_NAME}` (`pedidoExterno`)"
+          }
+        ]
+      },
+      {
+        "tableName": "eventos",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `paqueteId` INTEGER NOT NULL, `fecha` INTEGER NOT NULL, `descripcion` TEXT NOT NULL, `ubicacion` TEXT, `estado` TEXT NOT NULL, `fuente` TEXT NOT NULL, `huella` TEXT NOT NULL, FOREIGN KEY(`paqueteId`) REFERENCES `paquetes`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "paqueteId",
+            "columnName": "paqueteId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fecha",
+            "columnName": "fecha",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "descripcion",
+            "columnName": "descripcion",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ubicacion",
+            "columnName": "ubicacion",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "estado",
+            "columnName": "estado",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fuente",
+            "columnName": "fuente",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "huella",
+            "columnName": "huella",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_eventos_paqueteId",
+            "unique": false,
+            "columnNames": [
+              "paqueteId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_eventos_paqueteId` ON `${TABLE_NAME}` (`paqueteId`)"
+          },
+          {
+            "name": "index_eventos_paqueteId_huella",
+            "unique": true,
+            "columnNames": [
+              "paqueteId",
+              "huella"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_eventos_paqueteId_huella` ON `${TABLE_NAME}` (`paqueteId`, `huella`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "paquetes",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "paqueteId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e53f21d2d513aaa631522f3c27d2cc33')"
+    ]
+  }
+}

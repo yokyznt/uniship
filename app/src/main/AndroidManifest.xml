@@ -38,7 +38,16 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="uniship" android:host="ml" />
             </intent-filter>
+            <intent-filter android:label="Rastrear en UniShip">
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
         </activity>
+
+        <activity
+            android:name=".tiendas.ConectarTienda"
+            android:exported="false" />
 
         <service
             android:name=".lector.Escuchador"
