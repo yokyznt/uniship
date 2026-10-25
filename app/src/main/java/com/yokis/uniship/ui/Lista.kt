@@ -54,6 +54,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -288,9 +291,32 @@ private fun Tarjeta(p: Paquete, clic: () -> Unit) {
 fun Progreso(e: Estado) {
     val paso = pasoDe(e)
     val color = if (e == Estado.INCIDENCIA) Paleta.rojo else MaterialTheme.colorScheme.primary
+    val vivo = e != Estado.ENTREGADO && e != Estado.SIN_DATOS
+    val transicion = androidx.compose.animation.core.rememberInfiniteTransition(label = "avance")
+    val brillo by transicion.animateFloat(0f, 1f, androidx.compose.animation.core.infiniteRepeatable(androidx.compose.animation.core.tween(1600, easing = androidx.compose.animation.core.LinearEasing)), label = "brillo")
+    val avance = if (vivo) brillo else 0f
     Row(horizontalArrangement = Arrangement.spacedBy(5.dp), modifier = Modifier.fillMaxWidth()) {
         pasos.indices.forEach { i ->
-            Box(Modifier.weight(1f).height(6.dp).background(if (i <= paso && e != Estado.SIN_DATOS) color else Paleta.gris, RoundedCornerShape(3.dp)))
+            val lleno = i <= paso && e != Estado.SIN_DATOS
+            Box(
+                Modifier.weight(1f).height(6.dp).clip(RoundedCornerShape(3.dp)).background(if (lleno) color else Paleta.gris)
+                    .then(if (vivo && lleno) Modifier.drawWithContent {
+                        drawContent()
+                        val ancho = size.width
+                        val franja = 26.dp.toPx()
+                        val paso2 = franja * 2
+                        val corrimiento = avance * paso2
+                        var x = -paso2 + corrimiento
+                        while (x < ancho + franja) {
+                            drawRect(
+                                androidx.compose.ui.graphics.Color.White.copy(alpha = 0.32f),
+                                topLeft = androidx.compose.ui.geometry.Offset(x, 0f),
+                                size = androidx.compose.ui.geometry.Size(franja * 0.55f, size.height)
+                            )
+                            x += paso2
+                        }
+                    } else Modifier)
+            )
         }
     }
     Spacer(Modifier.height(4.dp))

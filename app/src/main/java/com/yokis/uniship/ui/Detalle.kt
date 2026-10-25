@@ -121,6 +121,10 @@ fun Detalle(id: Long, volver: () -> Unit) {
         if (p == null) return@Scaffold
         LazyColumn(Modifier.padding(pad).fillMaxSize(), contentPadding = PaddingValues(start = 20.dp, end = 20.dp, bottom = 32.dp)) {
             item { Encabezado(p) }
+            if (eventos.any { it.ubicacion != null }) item {
+                Spacer(Modifier.height(14.dp))
+                Mapa(eventos)
+            }
             item {
                 Spacer(Modifier.height(20.dp))
                 Text("Movimientos", style = MaterialTheme.typography.titleSmall)
