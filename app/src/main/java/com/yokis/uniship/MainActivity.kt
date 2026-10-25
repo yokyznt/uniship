@@ -29,6 +29,19 @@ class MainActivity : ComponentActivity() {
         recibir(intent)
     }
 
+    override fun onResume() {
+        super.onResume()
+        val ahora = System.currentTimeMillis()
+        if (ahora - ultimaRevision > 5 * 60_000) {
+            ultimaRevision = ahora
+            Rastreador.ahora(this)
+        }
+    }
+
+    companion object {
+        private var ultimaRevision = 0L
+    }
+
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (!hasFocus) return

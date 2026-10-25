@@ -51,7 +51,7 @@ object AliExpress {
     private fun llamar(ctx: Context, api: String, datos: JSONObject, post: Boolean = false): JSONObject {
         val (region, idioma) = regional()
         if (!datos.has("shipToCountry")) datos.put("shipToCountry", region)
-        if (!datos.has("_lang")) datos.put("_lang", idioma)
+        if (!datos.has("_lang")) datos.put("_lang", if (idioma.startsWith("es")) idioma else "es_MX")
         val texto = datos.toString()
         repeat(3) {
             val token = Tiendas.cookie(ACS, "_m_h5_tk")?.substringBefore("_").orEmpty()
@@ -71,7 +71,7 @@ object AliExpress {
             }
             val j = runCatching { JSONObject(cuerpo) }.getOrElse { throw Bloqueo("respuesta no JSON") }
             val ret = j.optJSONArray("ret")?.optString(0).orEmpty()
-            if (BuildConfig.DEBUG) android.util.Log.d("UniShip", "ae $api $ret")
+            if (BuildConfig.DEBUG) android.util.Log.d("UniShip", "ae $api $ret ${cuerpo.length} ${cuerpo.take(300)}")
             when {
                 ret.startsWith("SUCCESS") -> return j.optJSONObject("data") ?: JSONObject()
                 ret.startsWith("FAIL_SYS_TOKEN") || ret.startsWith("FAIL_SYS_ILLEGAL_ACCESS") -> Unit
@@ -126,17 +126,22 @@ object AliExpress {
             Envio(
                 l.optString("mailNo").ifBlank { null } ?: l.optString("originMailNo").ifBlank { null },
                 l.optString("logisticsCarrierName").ifBlank { null },
-                l.optJSONObject("etaInfo")?.optString("etaTimeText")?.ifBlank { null },
+                l.optJSONObject("etaInfo")?.let { eta ->
+                    eta.optLong("endEtaTime").takeIf { it > 0 }?.let { fecha(it) } ?: eta.optString("etaTimeText").ifBlank { null }
+                },
                 movs
             )
         }
     }
 
+    fun fecha(ms: Long): String = java.time.Instant.ofEpochMilli(ms).atZone(java.time.ZoneId.systemDefault()).toLocalDate()
+        .format(java.time.format.DateTimeFormatter.ofPattern("d 'de' MMMM", java.util.Locale.forLanguageTag("es-MX")))
+
     private fun lista(ctx: Context, pestana: String) = pedidos(
         llamar(ctx, LISTA, JSONObject().put("statusTab", pestana).put("renderType", "init").put("clientPlatform", "pc").put("timeZone", zona()))
     )
 
-    private fun rastreo(ctx: Context, id: String) = envios(
+    fun rastreo(ctx: Context, id: String) = envios(
         llamar(ctx, RASTREO, JSONObject().put("tradeOrderId", id).put("tradeOrderLineId", "").put("terminalType", "PC").put("needPageDisplayInfo", true).put("timeZone", zona()))
             .optJSONObject("module") ?: JSONObject()
     )
@@ -147,6 +152,7 @@ object AliExpress {
 
     suspend fun sincronizar(ctx: Context): Int = withContext(Dispatchers.IO) {
         val repo = UniShipApp.repo
+        if (BuildConfig.DEBUG) for (t in listOf("all", "shipped", "processing", "completed")) android.util.Log.d("UniShip", "ae pestaña $t: " + runCatching { lista(ctx, t).joinToString { it.id + " " + it.estado } }.getOrElse { it.toString() })
         val activos = (lista(ctx, "shipped").map { it to true } + lista(ctx, "processing").map { it to false }).distinctBy { it.first.id }
         val previos = repo.paquetes.todos().filter { it.activo && it.pedidoExterno?.startsWith("ae:") == true }
             .map { it.pedidoExterno!!.removePrefix("ae:").substringBefore(":") }.toSet()

@@ -26,6 +26,7 @@ class TiendasTest {
         val primero = e.first()
         assertTrue(primero.guia != null)
         assertTrue(primero.movimientos.size > 10)
+        assertTrue(primero.eta!!.contains(" de "))
         assertEquals(Estado.ENTREGADO, primero.movimientos.first().estado)
     }
 
