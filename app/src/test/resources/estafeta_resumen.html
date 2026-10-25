@@ -1,0 +1,2364 @@
+<!DOCTYPE html>
+<html data-hideScroll>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado</title>
+    <link rel="stylesheet" href="/Content/css/trackingTools.css" />
+    <link rel="stylesheet" href="/Content/css/trackingProcess.css" />
+
+    <script src="/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="/Scripts/jquery-ui.min.js"></script>
+
+    
+    <script type="text/javascript" src="/Scripts/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="/Content/css/bootstrap-datepicker3.css" />
+    <link href="/Content/css/bootstrap-select.min.css" rel="stylesheet" />
+    
+    <script src="/Scripts/js/trackingFunctions.js"></script>
+    <link href="/bundles/css?v=xIH-prKdRP-8B17CuFgIU_vWRnK-WRXHjEaqn28oXrE1" rel="stylesheet"/>
+
+    <script src="/bundles/modernizr?v=inCVuEFe6J4Q07A0AcRsbJic_UE5MwpRMNGcOtk94TE1"></script>
+
+</head>
+<body data-hideScroll>
+    
+<style>
+
+
+    .imgListSeleccion {
+        content: url(~/Content/ImgViewType/ListaSeleccion.png);
+    }
+
+    .imgList {
+        content: url(/Content/ImgViewType/Lista.png);
+    }
+
+    .imgMosaico {
+        content: url(/Content/ImgViewType/Mosaico.png);
+    }
+
+    .imgMosaicoSeleccion {
+        content: url(/Content/ImgViewType/MosaicoSeleccion.png);
+    }
+</style>
+
+
+<div class="shipmentHeader">
+    <div class="row">
+        <div class="col-xs-2">
+
+        </div>
+        <div class="col-xs-6">
+            <div>
+                <p>Sigue el estatus de tu envío</p>
+            </div>
+        </div>
+        <div class="col-xs-2">
+            <div>
+                <button type="button" class="headerButton" data-toggle="modal" data-target="#frequentQuestions">
+                    <p>Preguntas Frecuentes</p>
+                </button>
+            </div>
+        </div>
+        <div class="col-xs-2">
+            <div>
+
+                <button type="button" class="headerButton" value="Some text" onclick="window.location.href=&#39;/&#39;;">
+                    <span class="glyphicon glyphicon-search"></span>
+                    <p>Nueva Consulta</p>
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    #frequentQuestions {
+        width: 100%;
+        font-family: HelveticaRoman;
+        padding: 0!important;
+        font-size: 1.3vw;
+        color: var(--clr-blue-navy);
+        margin: 0 auto;
+        line-height: 1.6vw;
+
+    }
+
+        #frequentQuestions > .modal-dialog {
+            width: 80%;
+        }
+
+            #frequentQuestions > .modal-dialog > .modal-content {
+                /*padding: 3%;*/
+            }
+    .freqQuestion {
+    padding: 4%;
+    }
+        .freqQuestion > div {
+            text-align: center;
+            margin-bottom: 1.5%;
+        }
+    .freqQuestion > div > span:first-child {
+        font-family: HelveticaBold;
+        font-size: 1.5vw;
+    }
+</style>
+<div class="container">
+    <!-- The Modal -->
+    <div class="modal" id="frequentQuestions">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header modalHeader">
+                    <button type="button" class="close modalCloseBtn" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body freqQuestion">
+                    <div><span>Preguntas  Frecuentes</span></div>
+                    <span>
+                         <b>¿Qué es el número de guía?</b><br><br>Es el número de control que ampara el envío realizado. Con este número se pueden hacer rastreos en línea en el sistema Estafeta y se pueden levantar órdenes de localización y rastreo.<br><br><b>¿Por qué no hay información de este número de guía en el sistema?</b><br><br>El hecho de que en este momento no haya información en el sistema de rastreo no significa que el envío no esté en proceso de entrega. Hay varias razones por las cuales se puede dar esta situación: <br>- El envío no ha sido realizado aún. <br>- El envío se acaba de entregar o recoger y no ha ingresado al sistema aún. <br>- La guía física tuvo problemas en el código de barras y no pudo ser leída. <br>- Hubo problemas en la lectura de esta guía, en la transmisión de información o en la actualización de nuestro sistema<br><br><b>¿Qué puedo hacer?</b><br><br>Siga estos pasos: <br>1. Verifique que tenga el número de guía correcto. <br>2. Verifique que la persona encargada de hacer el envío efectivamente lo hizo. <br>3. Espere 6 horas antes de hacer un nuevo rastreo. <br>4. Si esto no soluciona el problema, llame a los teléfonos que aparecen en nuestra forma de Contacto.<br><br><b>¿Qué es un reporte de servicio?</b><br><br>Es una solicitud formal para rastrear y localizar un envío que, por diversas causas, no ha sido entregado dentro del tiempo de garantía.<br><br><b>¿Cuál es el horario de atención para estas órdenes?</b><br><br>Lunes a viernes, de 9:00 am. a 6:00 pm.<br><br><b>¿Cuál es el tiempo de respuesta a un reporte de servicio generado por internet?</b><br><br>Dependiendo del motivo del reporte de servicio el tiempo de repuesta es de 24 a 72 hrs. hábiles.<br><br><b>¿Por qué necesito un número de guía para levantar un reporte?</b><br><br>Es el dato básico para realizar la búsqueda del envío en nuestros sistemas.<br><br><b>¿Cómo levanto un reporte si no tengo el número de guía?</b><br><br>En este caso, deberá obtener el número de guía de la persona o empresa que realizó el envío.<br><br><b>¿Por qué tengo que saber el origen y el destino para levantar una reporte?</b><br><br>Sólo con esa información se podrá dar una respuesta completa a la solicitud.<br>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+</script>    <div class=shipmentsDiv1>
+        <div>
+<style>
+    .clsnTrackingCode {
+        display: inline-block;
+        width: 100%;
+        margin: 0% auto;
+        text-align: center;
+        padding-bottom: 2%;
+        border-bottom: 0.12vw solid var(--clr-gray-first);
+    }
+
+        .clsnTrackingCode > div {
+            display: inline-block;
+            background-color: var(--clr-blue-light);
+            width: 20%;
+            height: 3vw;
+            margin: 0 2%;
+            color: white;
+            font-size: 1.2vw;
+            border-radius: 2vw;
+            line-height: 3vw;
+        }
+</style>
+
+<div id="" class="shipmentByOne " >
+    <div>
+
+<style>
+    .bannerOSA {
+        font-size: 14px !important;
+        width: 100%;
+        background: #219518;
+        text-align: center;
+        color: #FFF;
+        padding: 7px 0px 7px 0px;
+    }
+    .calendarDiv > div {
+        top: 0px !important;
+        left: 0px !important;
+        width: 100%;
+    }
+    .calendarDiv > div > div > table {
+        width: 80%;
+        margin: 0 auto;
+    }
+    .calendarDiv > div > div > table td {
+        border: 1px solid #ddd;
+    }
+    .event {
+        background-color: #42B373 !important;
+        background-image: none !important;
+        color: #ffffff !important;
+    }
+    .calendarDiv .table-condensed > tbody > tr > td {
+        color: black !important;
+    }
+    .calendarGreen {
+    background-color: #219518 !important;
+    }
+    .calendarRed {
+        background-color: #A41414 !important;
+    }
+</style>
+
+
+<div class="shipmentInfoDiv">
+    <div>
+        <div class="shipmentInfoSeparator">
+            <div class="fontRoman">Número de guía: </div>
+            <div class="fontBold">6015491862604H80002045 </div>
+        </div>
+
+        
+        <div class="shipmentInfoSeparator">
+            <div class="fontRoman">Código de rastreo: </div>
+            <div class="fontBold">3825671510 </div>
+        </div>
+
+
+        <div class=shipmentInfoSeparator>
+            <div class="fontRoman">Servicio: </div>
+            <div class="fontBold">12:30</div>
+        </div>
+                <div>
+                    <div class="fontRoman">
+Fecha programada de entrega:                     </div>
+                        <div class="fontBold">
+                            <a class="scheduledDate" data-toggle="modal" data-target="#calendarModal0" id="date" name="date">
+21/10/2026                            </a>
+                        </div>
+                </div>
+    </div>
+        <div class="container" style="display:none;">
+        <div class="bannerOSA HelveticaRoman" style="margin-top: 8px;">
+             &nbsp;&nbsp;&nbsp;
+            <button type="button" class="btn btn-default HelveticaRoman" style="color:#1075ba;text-decoration: underline; font-weight:bolder; "
+                    id="btn_ModalOsaOpen_6015491862604H80002045">
+                
+            </button>
+        </div>
+    </div>
+</div>
+
+<div id="V1" class="fontBold" style="margin-left: 80px!important;font-size: 15px;color: var(--clr-blue-navy);margin-top: 8px;">Para ver más detalles de tu envío, puedes consultarlos abajo en "Ver detalles"</div>
+
+
+
+
+
+<style>
+
+
+    .PODNoInfofont {
+        font-family: HelveticaRoman;
+        padding: 0 8% 8%;
+        font-size: 1.3vw;
+        color: var(--clr-blue-navy);
+    }
+
+    .botonclose {
+        padding: 15px;
+        border-bottom: none;
+        /* border-bottom: 1px solid #e5e5e5; */
+    }
+
+    .close {
+        font-size: 30px;
+    }
+
+    .modalText {
+        margin: -3px 0px 0px;
+    }
+</style>
+
+
+
+<div class="container">
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="SignatureNoInfoModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header botonclose">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h1 class="HelveticaBold text-center" style="font-size: 22px; color:#003050">Firma</h1>
+                </div>
+
+                <div class="modal-body PODNoInfofont text-center">
+                   
+                
+                    <p class="modalText">Información no disponible en este momento,</p>
+                    <p class="modalText">intente mas tarde por este medio</p>
+                                    </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+<style>
+    .calendarModalContainer .modal > .modal-dialog {
+        width: 55%;
+    }
+
+    .modalHeader {
+        padding: 0 2%;
+        border-bottom: none;
+    }
+
+    .modalCloseBtn {
+        font-size: 3vw;
+        padding-right: 0.5vw;
+        color: var(--clr-blue-light);
+        font-family: HelveticaBold;
+        opacity: 1;
+    }
+
+    .modal-footer {
+        text-align: center;
+    }
+
+    .modal-footer-message {
+        border: 2px solid;
+        border-color: #A41414;
+        background-color: #F7F4F4;
+        color: var(--clr-blue-navy);
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    .calendarModalBody {
+        padding: 0 0 5% 0;
+    }
+
+        .calendarModalBody > div:first-child, .calendarModalBody > div:nth-child(4) {
+            text-align: center;
+            color: var(--clr-blue-navy) !important;
+            font-size: 1.25vw;
+            font-family: HelveticaBold;
+            margin-top: 2%;
+            margin-bottom: 2%;
+        }
+
+        .calendarModalBody > div > a:hover {
+            cursor: pointer;
+        }
+
+        .calendarModalBody > div:first-child > a > span {
+            font-family: HelveticaBold;
+            color: var(--clr-green-grass);
+            text-decoration: underline;
+        }
+
+        .calendarModalBody > div:nth-child(4) > a > span {
+            font-family: HelveticaBold;
+            color: var(--clr-red-blood);
+            text-decoration: underline;
+        }
+
+        .calendarModalBody > div:nth-child(4) > div:first-child {
+            width: 1vw;
+            height: 1vw;
+            background-color: var(--clr-red-blood);
+            display: inline-block;
+        }
+
+        .calendarModalBody > div:nth-child(3) {
+            height: 3vw;
+            width: 79.5%;
+            margin: 0 auto;
+            padding: 0 4px;
+            background-color: var(--clr-gray-first);
+        }
+
+    .calendarDiv > div:first-child {
+        padding-bottom: 0;
+    }
+
+    .calendarDiv > div > div > table > thead {
+        background-color: var(--clr-gray-first);
+    }
+
+        .calendarDiv > div > div > table > tbody td, .calendarDiv > div > div > table > thead th {
+            border-radius: 0;
+        }
+
+    .calendarDiv > div > div > table > tbody > tr > td:first-child,
+    .calendarDiv > div > div > table > tbody > tr > td:last-child {
+        background-color: var(--clr-gray-first);
+    }
+</style>
+
+
+
+
+<div class="container calendarModalContainer">
+    <!-- The Modal -->
+    <div class="modal calendarModal" id="calendarModal0">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header modalHeader">
+                    <button type="button" class="close modalCloseBtn" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body calendarModalBody">
+                    <div>
+                        Fecha programada de entrega:
+                        <a onclick="setScheduledDate('10-21-2026', false, 0);">
+                            <span>21/10/2026</span>
+                        </a>
+                    </div>
+                    <div class="calendarDiv" id="calendarDivId0">
+                    </div>
+                    <div></div>
+                            <div>
+                                <div></div>
+                                Fecha programada inicial, antes del cambio:
+                                <a>
+                                    
+                                    <span>21/10/2026 </span>
+                                </a>
+                            </div>
+
+                </div>
+                <!-- Modal footer    -->
+                <div class="modal-footer">
+                    <!--  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>-->
+                    <div class="modal-footer-message">
+                        <span>Para tener una fecha de entrega final,debes considerar el<br />C.P. destino/origen y la frecuencia de entrega en la zona destino. </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+        $('.calendarModal').on('shown.bs.modal', function (event) {
+
+            //if (unachievedDate != "") {
+                setScheduledDate('10-21-2026', false, 0);
+
+            
+        })
+</script>
+<style>
+    .signatureModal > .modal > .modal-dialog {
+        width: 60%;
+    }
+
+    .signatureBase64 {
+        padding: 0 5% 5%;
+        color: var(--clr-blue-navy);
+        font-family: HelveticaBold;
+        font-size: 1.3vw;
+        text-align: center;
+    }
+
+        .signatureBase64 > div > img {
+            width: 60%;
+            display: block;
+            margin: 10% auto;
+        }
+</style>
+<div class="container signatureModal">
+    <!-- The Modal -->
+    <div class="modal" id="signatureModal6015491862604H80002045">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header modalHeader">
+                    <button id="SinatureClose" type="button" class="close modalCloseBtn" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body signatureBase64">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+
+
+#pleaseWaitDialog {
+    background-color:transparent;
+
+}
+
+.modal {
+}
+.vertical-alignment-helper {
+    display:table;
+    height: 100%;
+    width: 100%;
+}
+.vertical-align-center {
+    /* To center vertically */
+    
+    vertical-align:central;
+    padding-top:150px;
+}
+    /*.modal-content {
+        /* Bootstrap sets the size of the modal in the modal-dialog class, we need to inherit it */
+        width: inherit;
+        height: inherit;
+        /* To center horizontally
+            margin: 0 auto;
+        border: none;
+        min-height: 1px;
+        padding: 0px;
+        margin: 0px 0;
+        margin-left: 0px auto;
+        margin-right: 0px auto;
+        margin-top: 0px auto;
+        margin-bottom: 0px auto;
+    }*/
+.modal-content {
+    border: none;
+}
+
+    .Loading {
+        border: none;
+     
+    }
+</style>
+
+
+
+
+
+
+
+<div class="modal fade bd-example-modal-sm"  id="LoadingModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class=" vertical-align-center text-center">
+            <span class="fas fa-shipping-fast faa-passing animated fa-7x" style="color:white"></span><br />
+            <span class="text-center" style="color:white; font-size:20px;">Cargando...</span>
+        </div>
+        
+    </div>
+</div>
+<script>
+    var CancelModificacion6015491862604H80002045 = '';
+
+    function onCancelOsa_6015491862604H80002045 ()
+    {
+        CancelModificacion6015491862604H80002045 = 'Cancel'
+        $("#cancelacionModificacion6015491862604H80002045").val('Cancel');
+        $("#btn_ModalOsaOpen_6015491862604H80002045").click();
+    }
+
+    function onModOsa_6015491862604H80002045 ()
+    {
+        CancelModificacion6015491862604H80002045 = 'Cancel'
+        $("#cancelacionModificacion6015491862604H80002045").val('Mod');
+        $("#btn_ModalOsaOpen_6015491862604H80002045").click();
+    }
+
+    function onDetOsa_6015491862604H80002045 ()
+    {
+        $("#DetencionNueva6015491862604H80002045").val('Det2');
+        CancelModificacion6015491862604H80002045 = 'Cancel'
+        $("#cancelacionModificacion6015491862604H80002045").val('Mod');
+        $("#btn_ModalOsaOpen_6015491862604H80002045").click();
+    }
+
+    function onNewOsa_6015491862604H80002045 ()
+    {
+        CancelModificacion6015491862604H80002045 = ''
+        $("#DetencionNueva6015491862604H80002045").val('New');
+        $("#btn_ModalOsaOpen_6015491862604H80002045").click();
+    }
+
+    $("#btn_ModalOsaOpen_6015491862604H80002045").click(function ()
+    {
+        if (( 0 == 2 && $("#DetencionNueva6015491862604H80002045").val() != 'New' ) && CancelModificacion6015491862604H80002045 == '')
+        {
+            CancelModificacion6015491862604H80002045 = '';
+            $("#cancelacionModificacion6015491862604H80002045").val('');
+            GetOsaOrder6015491862604H80002045();
+        }
+        else
+        {
+            CancelModificacion6015491862604H80002045 = '';
+            $('#LoadingModal').modal({ backdrop: 'static', keyboard: false });
+            $('#DivResultadoSolicitud6015491862604H80002045').html('');
+            $('#DivBtnsConfirmation6015491862604H80002045').show();
+            $('#DivResumenGeneral6015491862604H80002045').show();
+            $('#prevBtn6015491862604H80002045').show();
+            var x = document.getElementsByClassName("tab6015491862604H80002045");
+            x[currentTab6015491862604H80002045].style.display = "none";
+            currentTab6015491862604H80002045 = 0;
+            showTab6015491862604H80002045(currentTab6015491862604H80002045);
+            var InputDataOriDest = new Object();
+            InputDataOriDest.waybill = '6015491862604H80002045';
+            $.ajax({
+            url: '/api/OsaInfo/GetDataOrigDest',
+            type: 'POST',
+            dataType: 'json',
+            data: InputDataOriDest,
+                success: function (data, textStatus, xhr)
+                {
+                    $('#LoadingModal').modal("hide");
+                    if (data.origen != null && data.destino != null)
+                    {
+                        $("#modalOsa_6015491862604H80002045").modal({ backdrop: 'static', keyboard: false });
+                        $("#remCelularCal6015491862604H80002045").html(data.origen.Celular);
+                        $("#remCelularCCal6015491862604H80002045").val(data.origen.CelularCrypt);
+                        $("#remCorreoCal6015491862604H80002045").html(data.origen.Correo);
+                        $("#remCorreoCCal6015491862604H80002045").val(data.origen.CorreoCrypt);
+                        $("#originZipCode6015491862604H80002045").val(data.origen.CP);
+                        $("#originDireccion6015491862604H80002045").val(data.destino.Direccion);
+                        $("#desCelularCal6015491862604H80002045").html(data.destino.Celular);
+                        $("#desCelularCCal6015491862604H80002045").val(data.destino.CelularCrypt);
+                        $("#desCorreoCal6015491862604H80002045").html(data.destino.Correo);
+                        $("#desCorreoCCal6015491862604H80002045").val(data.destino.CorreoCrypt);
+                        $("#originalDestinyZipCode6015491862604H80002045").val(data.destino.CP);
+                        $('#zipCode6015491862604H80002045').val($("#originalDestinyZipCode6015491862604H80002045").val());
+                    }
+                    else {
+                        Swal.fire({ position: 'top', type: 'warning', title: '', html: '<div class="h4 text-center HelveticaMed color10">' + 'No es posible hacer una solicitud, ya que no contamos con los datos de remitente ni destinatario.' + '</div>', showCloseButton: true, showConfirmButton: false, customClass: { confirmButton: 'HelveticaRoman btn btn-info btn-sm', closeButton: 'color10', } });
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown)
+                {
+                    $('#LoadingModal').modal("hide");
+                    Swal.fire({ position: 'top', type: 'warning', title: '', html: '<div class="h4 text-center HelveticaMed color10">' + 'No es posible hacer una solicitud, ya que no contamos con los datos de remitente ni destinatario.' + '</div>', showCloseButton: true, showConfirmButton: false, customClass: { confirmButton: 'HelveticaRoman btn btn-info btn-sm', closeButton: 'color10', } });
+                }
+            });
+        }
+    });
+    function GetOsaOrder6015491862604H80002045()
+    {
+        $('#LoadingModal').modal({ backdrop: 'static', keyboard: false });
+        var Request = new Object();
+        Request.osaOrder = '';
+        Request.waybillNumber = '6015491862604H80002045';
+        $.ajax({
+        url: '/api/OsaInfo/GetOsaOrder',type: 'POST',dataType: 'json',
+        data: Request,
+            success: function (data, textStatus, xhr)
+            {
+                $('#LoadingModal').modal("hide");
+                if (data != null)
+                {
+                    if (data.result.result == "000")
+                    {
+                        $("#ObjOsaAnterior6015491862604H80002045").val(JSON.stringify(data.itemOrder.additionalServices));
+                        var tipoSolicitante = (data.itemOrder.clientType == '00' ? 'Destinatario' : 'Remitente');
+                        $("#solocitanteOsa6015491862604H80002045").val(tipoSolicitante);
+                        $("#solocitudOsa6015491862604H80002045").val(data.itemOrder.additionalServices[0].name);
+                        $("#solocitudOsaOrder6015491862604H80002045").val(data.itemOrder.osaOrder);
+                        var resumenFechaEntrega = '';
+                        var mensajeCancel = '';
+                        var mensajeNormal = '';
+                        if (data.itemOrder.newDeliveryDate != null)
+                        {
+                            $("#newDeliveryDateForCombine6015491862604H80002045").val(data.itemOrder.newDeliveryDate);
+                            var fechaEntregaSplit = data.itemOrder.newDeliveryDate.split("-");
+                            var fechaDate = $.datepicker.parseDate('yy-mm-dd', data.itemOrder.newDeliveryDate);
+                            var months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+                            resumenFechaEntrega = resumenFechaEntrega + fechaEntregaSplit[2] + ' de ' + months[fechaDate.getMonth()] + ' de ' + fechaEntregaSplit[0];
+                        }
+                        var estatusOsa = (data.itemOrder.statusOsaOrder == 'Confirmada' ? 'en proceso de ser atendida' : data.itemOrder.statusOsaOrder);
+                        var showButtons = false;
+                        var footerBotones = '';
+                        footerBotones = footerBotones + '<br /><p style="font-size: larger" class="HelveticaRoman color10"> ¿Quieres hacer alguna modificación?</p>';
+                        if (data.itemOrder.additionalOptions.cancellation.toString().toLowerCase() == 'true' || data.itemOrder.additionalOptions.update.toString().toLowerCase() == 'true') {
+                        }
+                        if (data.itemOrder.additionalOptions.update.toString().toLowerCase() == 'true') {
+                            showButtons = true;
+                            footerBotones = footerBotones + '<button type="button" class="btn btn-info btn-sm" onclick="onModOsa_6015491862604H80002045();  swal.close();">Cambiar solicitud</button>';
+                        }
+                        if (data.itemOrder.additionalOptions.cancellation.toString().toLowerCase() == 'true') {
+                            showButtons = true;
+                            footerBotones = footerBotones + '&nbsp;&nbsp;&nbsp;<button type="button" id="btnCancelacion_6015491862604H80002045" onclick="onCancelOsa_6015491862604H80002045();  swal.close();" class="btn btn-info btn-sm">Cancelar solicitud</button>';
+                        }
+                        if (data.itemOrder.additionalOptions.registerShippingStop.toString().toLowerCase() == 'true') {
+                            showButtons = true;
+                            footerBotones = footerBotones + '&nbsp;&nbsp;&nbsp;<button type="button" id="btnDetencionM_6015491862604H80002045" onclick="onDetOsa_6015491862604H80002045();  swal.close();" class="btn btn-info btn-sm">Detención de envío</button>';
+                        }
+                        if (data.itemOrder.additionalOptions.register.toString().toLowerCase() == 'true') {
+                            showButtons = true;
+                            footerBotones = footerBotones + '&nbsp;&nbsp;&nbsp;<button type="button" id="btnNuevaM_6015491862604H80002045" onclick="onNewOsa_6015491862604H80002045();  swal.close();" class="btn btn-info btn-sm">Nueva solicitud</button>';
+                        }
+                        var footerSeguimiento = '<p style="font-size: larger" class="HelveticaRoman color10"> Da seguimiento a tu envío con el número de guía desde estafeta.com o a través de la Aplicación Estafeta Móvil. </p>';
+                        var mensaje = '<p style="font-size:medium" class="HelveticaBold color10">Solicitud de reprogramación de entrega </p><br />';
+                        if (data.itemOrder.statusOsaOrder == 'Cancelada') {
+                            mensaje = mensaje + '<p style="font-size: larger" class="HelveticaRoman color10"> Este envío tenía una solicitud de servicio opcional, la cual ha sido <b>' + estatusOsa + '.</b><br />';
+                        }
+                        else
+                        {
+                            $.each(data.itemOrder.additionalServices, function (key, value) {
+                                if (value.code == 6)
+                                {
+                                    if (data.itemOrder.statusOsaOrder == 'Atendida') {
+                                        mensaje = mensaje + '<p style="font-size: larger" class="HelveticaRoman color10"> Este envío tiene una solicitud de reprogramación de entrega: <b>' + estatusOsa + '.</b><br /><br />';
+                                        mensajeNormal = mensajeNormal + 'A solicitud del Remitente, el envío ha sido detenido y será devuelto.<br />'
+                                        mensajeNormal = mensajeNormal + 'El servicio solicitado es: <b>' + data.serviciosMostrar + '.</b></p>'
+                                        mensajeNormal = mensajeNormal + '<p style="font-size: larger" class="HelveticaRoman color10">  Folio <b> ' + data.itemOrder.osaOrder + '</b></p > ';
+                                        footerSeguimiento = '<p style="font-size: larger" class="HelveticaRoman color10"> Da seguimiento a tu envío con el número de Guía original  o con la Guía de Retorno asignada. </p>';
+                                    }
+                                    if (data.itemOrder.statusOsaOrder == 'Confirmada') {
+                                        mensaje = mensaje + '<p style="font-size: larger" class="HelveticaRoman color10"> Este envío tiene una solicitud de reprogramación de entrega: <b>' + estatusOsa + '.</b><br /><br />';
+                                        mensajeNormal = mensajeNormal + 'A solicitud del Remitente, el envío será detenido y devuelto.<br />'
+                                        mensajeNormal = mensajeNormal + 'El servicio solicitado es: <b>' + data.serviciosMostrar + '.</b></p>'
+                                        mensajeNormal = mensajeNormal + '<p style="font-size: larger" class="HelveticaRoman color10">  Folio <b> ' + data.itemOrder.osaOrder + '</b></p > ';
+                                        mensajeNormal = mensajeNormal + '<p style="font-size: larger" class="HelveticaRoman color10"> Da seguimiento a tu envío con el número de Guía original  o con la Guía de Retorno que se asignará. </p>';
+                                    }
+                                }
+                                else {
+                                    mensaje = '';
+                                    mensajeNormal = '';
+                                    mensaje = '<p style="font-size:medium" class="HelveticaBold color10">Solicitud de reprogramación de entrega </p><br />';
+                                    mensaje = mensaje + '<p style="font-size: larger" class="HelveticaRoman color10"> Este envío tiene una solicitud de reprogramación de entrega <b>' + estatusOsa + '.</b><br />';
+                                    mensajeNormal = mensajeNormal + 'El servicio solicitado es: <b>' + data.serviciosMostrar + '.</b></p>'
+                                    mensajeNormal = mensajeNormal + '<p style="font-size: larger" class="HelveticaRoman color10">Fecha de entrega: <b>' + resumenFechaEntrega + '</b>    <b>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</b>  Folio: <b> ' + data.itemOrder.osaOrder + '</b></p > ';
+                                }
+                            })
+                        }
+
+                        mensajeCancel = mensajeCancel + '<br />Servicio opcional cancelado: <b>' + data.serviciosMostrar + '.</b></p>'
+                        mensajeCancel = mensajeCancel + '<p style="font-size: larger" class="HelveticaRoman color10">  Folio <b> ' + data.itemOrder.osaOrder + '</b></p > ';
+                        mensaje = mensaje + (data.itemOrder.statusOsaOrder == 'Cancelada' ? mensajeCancel + footerSeguimiento: mensajeNormal);
+                        mensaje = mensaje + (data.itemOrder.statusOsaOrder == 'Atendida' ? footerSeguimiento : '');
+                        mensaje = mensaje + (data.itemOrder.statusOsaOrder == 'Confirmada' ? '' : '');
+
+                        if (showButtons) {
+                            mensaje = mensaje + footerBotones;
+                        }
+                        Swal.fire({ title: '<span class="HelveticaRoman color10" style="font-size: larger"></span>', html: mensaje, text: 'html', showCloseButton: true, allowOutsideClick: true, position: 'top', showConfirmButton: false, allowEscapeKey: true, customClass: { closeButton: 'color1'}});
+                    }
+                    else
+                    {
+                        Swal.fire({ position: 'top', type: 'warning', title: '', html: '<div class="h4 text-center HelveticaMed color10">' + 'Lo sentimos, no logramos mostrarte el estatus de tu solicitud. Por favor, intenta nuevamente.' + '</div>', showCloseButton: true, showConfirmButton: false, customClass: { confirmButton: 'HelveticaRoman btn btn-info btn-sm', closeButton: 'color10', } });
+                    }
+                }
+                else {
+                    Swal.fire({ position: 'top', type: 'warning', title: '', html: '<div class="h4 text-center HelveticaMed color10">' + 'Lo sentimos, no logramos mostrarte el estatus de tu solicitud. Por favor, intenta nuevamente.' + '</div>', showCloseButton: true, showConfirmButton: false, customClass: { confirmButton: 'HelveticaRoman btn btn-info btn-sm', closeButton: 'color10', } });
+                }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                $('#LoadingModal').modal("hide");
+                Swal.fire({ position: 'top', type: 'warning', title: '', html: '<div class="h4 text-center HelveticaMed color10">' + 'Lo sentimos, no logramos mostrarte el estatus de tu solicitud. Por favor, intenta nuevamente.' + '</div>', showCloseButton: true, showConfirmButton: false, customClass: { confirmButton: 'HelveticaRoman btn btn-info btn-sm', closeButton: 'color10', } });
+            }
+        });;
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $(".receivedSignature").on("click", function () {
+            var signatureId = $(this).attr("id");
+            var shipmentIndex = $(this).attr("data-shipment-index");
+            $.ajax({
+                url: "/es/Tracking/GetTrackingSignatureBase64",
+                type: "POST",
+                data: { shipmentIndex: shipmentIndex, signatureId: signatureId }
+            })
+                .done(function (partialViewResult) {
+                    if (!(partialViewResult === null || partialViewResult === "")) {
+                        $("#signatureModal" + shipmentIndex + "> div > div > .signatureBase64").html(partialViewResult);
+                    }
+                    else {
+                        $('#SinatureClose').trigger('click');
+                        $('#SignatureNoInfoModal').modal({ backdrop: 'static', keyboard: false });
+                    }
+                });
+        });
+    });
+    $(".MultipleLink").click(function (e) {
+        $('#LoadingModal').modal({ backdrop: 'static', keyboard: false });
+    });
+    $(".ReplaceWaybillLink").click(function (e) {
+        $('#LoadingModal').modal({ backdrop: 'static', keyboard: false });
+    });
+</script><div class="stateStatusLineDiv ">
+        <div class="stateStatusLine stateStatusLine_4Items backgroundGray">
+
+<div class=stateStatusDiv_4Items >
+    <div class="stateStatus processedStatusBg" data-toggle=tooltip data-placement=right data-html=true  title="13:37&lt;br&gt;20/10/2026&lt;br&gt;Veracruz">
+        <img src=/Content/imgs/ShipmentStates/recolectado.png />
+    </div>
+</div>
+
+<div class=stateStatusDiv_4Items >
+    <div class="stateStatus currentProcessStatusBg" data-toggle=tooltip data-placement=right data-html=true  title="17:47&lt;br&gt;20/10/2026&lt;br&gt;Veracruz">
+        <img src=/Content/imgs/ShipmentStates/enTransito.png />
+    </div>
+</div>
+
+<div class=stateStatusDiv_4Items >
+    <div class="stateStatus pendingStatusBg" data-toggle=tooltip data-placement=right data-html=true  title="">
+        <img src=/Content/imgs/ShipmentStates/enProceso.png />
+    </div>
+</div>
+
+<div class=stateStatusDiv_4Items >
+    <div class="stateStatus pendingStatusBg" data-toggle=tooltip data-placement=right data-html=true  title="06500, CUAUHTEMOC">
+        <img src=/Content/imgs/ShipmentStates/entregadoGris.png />
+    </div>
+</div>
+        <p class="stateDescription stateDescriptionWidth_4Items fontColorProcessed">
+            Recibido por Estafeta
+
+        </p>
+        <p class="stateDescription stateDescriptionWidth_4Items fontColorCurrentProcess">
+            En Tr&#225;nsito
+
+        </p>
+        <p class="stateDescription stateDescriptionWidth_4Items fontColorPending">
+            En Proceso de Entrega a Domicilio
+
+        </p>
+        <p class="stateDescription stateDescriptionWidth_4Items fontColorPending">
+            Entregado
+
+        </p>
+            <p class="stateDescription stateDescriptionWidth_4Items fontColorProcessed"></p>
+        <p class="stateDescription stateDescriptionWidth_4Items fontColorCurrentProcessMessage" style="color:#003050">
+            17:47  <br /> 20/10/2026 <br />
+                Veracruz
+
+        </p>
+            <p class="stateDescription stateDescriptionWidth_4Items fontColorPending"></p>
+            <p class="stateDescription stateDescriptionWidth_4Items fontColorPending"></p>
+
+</div>
+</div>            <div class="collapse in shipCompleteInfo" id="shipmentCompleteInfo0" data-shipment-index=0 data-shipCompleteInfo>
+<style>
+    .Btnfont {
+        font-family: HelveticaRoman;
+        font-size: 14px;
+        color: var(--clr-blue-navy);
+        text-align: center;
+    }
+
+    .btnGray {
+        background-color: var(--clr-gray-third);
+        border-radius: 40px !important;
+    }
+
+    .newBlue {
+        background-color: #0D8EC2;
+        border-radius: 40px !important;
+        height: 32px;
+        border: none;
+        color:white;
+    }
+
+    .btnGray2 {
+        background-color: #DEDEDE;
+        border-radius: 40px !important;
+    }
+
+    fade-scale {
+        transform: scale(0);
+        opacity: 0;
+        -webkit-transition: all .25s linear;
+        -o-transition: all .25s linear;
+        transition: all .25s linear;
+    }
+
+    .fade-scale.in {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+
+    @keyframes example {
+
+        0% {
+            width: 59px;
+            height: 59px;
+        }
+
+        25% {
+            width: 58px;
+            height: 58px;
+        }
+
+        50% {
+            width: 59px;
+            height: 59px;
+        }
+
+        75% {
+            width: 60px;
+            height: 60px;
+        }
+
+        100% {
+            width: 61px;
+            height: 61px;
+        }
+    }
+</style>
+
+<div class="shipmentOperationsDiv">
+    <div class="shipmentOperations container">
+
+
+        <div class="row">
+
+            <div class="col-sm-1 text-center" style="margin-bottom:0.5em;">
+                <div class="row">
+                    <div class="col-sm-6">
+
+                    </div>
+                    <div class="col-sm-6" style="margin-top: 61px; margin-right: 10px">
+                        <!--Encuesta-->
+                        <div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4 " style="margin-bottom:0.5em;">
+                <div class="row">
+                    
+
+                    <div class="col-sm-11 text-left">
+                        <div class="col-sm-6 text-left">
+                            <br />
+                            <p class="Btnfont">¿Tuviste <br />problemas con <br />tu envio? </p>
+                            
+                        </div>
+                        <div class="col-sm-6 text-left">
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-5">
+                            <div class="">
+                                <input type="button" id="btn_Reporte_18C5349EE883495DA18824874DB266AB"
+                                       data-guia="6015491862604H80002045"
+                                       data-cliente=""
+                                       data-emailclient=""
+                                       data-phone=""
+                                       data-numclient=""
+                                       data-fecharecoleccion="20/10/2026"
+                                       data-destino=""
+                                       class=" newBlue"
+                                       
+                                       value="Ver mi reporte">
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <span id="tooltipReport0" class="fa fa-info-circle color1" style="font-size:22px; vertical-align:middle; cursor:pointer;"
+                                  data-tooltip="tooltip" data-placement="top" title="Si tienes alguna aclaraci&#243;n de tu env&#237;o puedes generar un reporte al dar clic al bot&#243;n Generar tu reporte."></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 text-center" style="margin-bottom:0.5em;">
+                <div class="row">
+                    
+
+                    <div class="col-sm-12 text-left" style="margin-top: 37px;">
+                        <div class="col-sm-7 text-left">
+                             <p class="Btnfont">Obtén tu guía de<br />cortesía aquí</p>
+                            
+                        </div>
+                        <div class="col-sm-5 text-left">
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-11">
+                        <div class="col-sm-8">
+
+                            <input type="button" value="Genera guía" class="btn disabled btnGray2 courtesyWaybill "
+                                   data-shipment-index="6015491862604H80002045" data-toggle="modal" data-target="#courtesyWaybillModal6015491862604H80002045" disabled newBlue />
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="" style="text-align: left;">
+                                <span id="tooltipReport0" class="fa fa-info-circle color1" style="font-size:22px; vertical-align:middle; cursor:pointer;"
+                                      data-tooltip="tooltip" data-placement="top" title="Obtén tu guía de cortesía para intercambio en punto de venta (Clientes esporádicos)"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4 text-center" style="margin-bottom:0.5em;">
+                <div class="row">
+                    
+
+                    <div class="col-sm-12 text-left" style="margin-top: 10px;">
+                        <div class="col-sm-6 text-left">
+                            <p class="Btnfont">Consulta tu<br />comprobante de<br />entrega aquí</p>
+                            
+                        </div>
+                        <div class="col-sm-6 text-left">
+
+                        </div>
+
+                        <div class="col-sm-12" style="margin-top: 6px;">
+
+                            <div class="col-xs-6">
+
+                                <input type="button" value="Comprobante" class="btn disabled btnGray2 pod " data-shipment-index="6015491862604H80002045"
+                                   data-toggle="modal" data-target="#podModal6015491862604H80002045" disabled style="width: 129px;"/>
+
+                                
+
+
+
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="">
+                                    <span id="tooltipReport0" class="fa fa-info-circle color1" style="font-size:22px; vertical-align:middle; cursor:pointer;"
+                                          data-tooltip="tooltip" data-placement="top" title="Consulta comprobante de entrega (archivo PDF)"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="content_18C5349EE883495DA18824874DB266AB">
+        </div>
+
+        <!-- The Modal -->
+        <div class="modal" id="modalEncuesta">
+            <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header" style="margin:5px !important; padding:5px !important;">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body" style="margin:0px !important; padding:1px !important;">
+                        <iframe src="https://forms.office.com/r/ck8D10FV0A" width="100%" height="600" frameborder="0"></iframe>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<style>
+    .podModal > div > .modal-dialog {
+        width: 80%;
+        height: 100%;
+    }
+
+        .podModal > div > .modal-dialog > div > .podPdfBase64 > iframe {
+            width: 100%;
+            height: 1200px;
+        }
+
+    .swal-wide {
+        width: 300px !important;
+    }
+</style>
+<div class="container podModal">
+    <!-- The Modal -->
+    <div class="modal" id="podModal6015491862604H80002045">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header modalHeader">
+                    <button id="PODDiv" type="button" class="close modalCloseBtn" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body podPdfBase64">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+
+
+     .PODNoInfofont {
+        font-family: HelveticaRoman;
+        padding: 0 8% 8%;
+        font-size: 1.3vw;
+        color: var(--clr-blue-navy);
+    }
+
+     .botonclose {
+    padding: 15px;
+    border-bottom: none;
+    /* border-bottom: 1px solid #e5e5e5; */
+    }
+
+     .close {
+ 
+    font-size: 30px;
+    
+}
+      .modalText {
+
+        
+        margin: -3px 0px 0px;
+
+    }
+
+
+      
+
+</style>
+
+
+
+<div class="container">
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="PODNoInfoModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header botonclose">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    
+                </div>
+
+                <div class="modal-body PODNoInfofont text-center">
+                    <p class="modalText">Comprobante de entrega no disponible en este momento,</p>
+                    <p class="modalText">intente mas tarde por este medio</p>
+                    <p class="modalText"> generarlo nuevamente.</p>
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+<style>
+
+
+    .PODNoInfofont {
+        font-family: HelveticaRoman;
+        padding: 0 8% 8%;
+        font-size: 1.3vw;
+        color: var(--clr-blue-navy);
+    }
+
+    .botonclose {
+        padding: 15px;
+        border-bottom: none;
+        /* border-bottom: 1px solid #e5e5e5; */
+    }
+
+    .close {
+        font-size: 30px;
+    }
+
+    .modalText {
+        margin: -3px 0px 0px;
+    }
+</style>
+
+
+
+<div class="container">
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="ReportServiceNoInfoModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header botonclose">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                </div>
+
+                <div class="modal-body PODNoInfofont text-center">
+                    <p class="modalText">Lo sentimos,no se puede generar</p>
+                    <p class="modalText">en este momento tu Reporte,inténtalo nuevamente.</p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<style>
+    .courtesyWaybillModal > div > div > .modal-content {
+        margin-top: 10%;
+    }
+
+    .courtesyWaybillModal > div > .modal-dialog {
+        width: 50%;
+    }
+
+    .courtesyWaybill {
+        text-align: center;
+        font-family: HelveticaRoman;
+    }
+
+        .courtesyWaybill > div > h3 {
+            font-size: 1.8vw;
+            margin-top: 0;
+            font-family: HelveticaBold;
+            color: var(--clr-blue-navy);
+        }
+
+        .courtesyWaybill > div > div > div {
+            margin: 1% auto 8% !important;
+            font-family: HelveticaRoman;
+            color: var(--clr-blue-navy);
+            width: 60%;
+            margin: 0 auto;
+            font-size: 1.2vw;
+        }
+
+        .courtesyWaybill > div > div > input {
+            height: 3vw;
+            border-radius: 3vw;
+            width: 40%;
+            outline: none;
+            padding: 2%;
+            color: var(--clr-blue-navy);
+            font-size: 1.4vw;
+        }
+
+        .courtesyWaybill > div > input[type="button"] {
+            margin: 3% auto;
+            background-color: var(--clr-blue-light);
+            width: 20%;
+            border: none;
+            border-radius: 2vw;
+            height: 2.5vw;
+            color: white;
+            font-size: 1.2vw;
+        }
+</style>
+<div class="container courtesyWaybillModal">
+    <!-- The Modal -->
+
+    <div class="modal" id="courtesyWaybillModal6015491862604H80002045">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header modalHeader">
+                    <button id="CloseCourtesyModal" type="button" class="close modalCloseBtn" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body courtesyWaybill">
+                    <div>
+                        <h3>Guía de Cortesía</h3>
+                    </div>
+                    <div class="courtesyWaybillResult">
+                        <div>
+                            <div>
+                                Ingresa el número de ticket de recepción del punto de venta para obtener una guía de cortesía
+                            </div>
+                            <input id="DeliveryDate" name="reasons" type="hidden" value="">
+                        </div>
+                        <div>
+                            <input type="text" id="ticketId6015491862604H80002045" />
+                        </div>
+                        <input type="button" class="submitCourtesyWaybill" data-shipment-index="6015491862604H80002045" value="Enviar" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<style>
+
+
+    .PODNoInfofont {
+        font-family: HelveticaRoman;
+        padding: 0 8% 8%;
+        font-size: 1.3vw;
+        color: var(--clr-blue-navy);
+    }
+
+    .botonclose {
+        padding: 15px;
+        border-bottom: none;
+        /* border-bottom: 1px solid #e5e5e5; */
+    }
+
+    .close {
+        font-size: 30px;
+    }
+
+    .modalText {
+        margin: -3px 0px 0px;
+    }
+</style>
+
+
+
+<div class="container">
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="CourtesyWbNoInfoModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header botonclose">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                </div>
+
+                <div class="modal-body PODNoInfofont text-center">
+                    <p class="modalText">Guía de cortesía no disponible en este momento,</p>
+                    <p class="modalText">intente mas tarde por este medio.</p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        //Courtesy Waybill
+        $(".submitCourtesyWaybill").on("click", function () {
+            $('#LoadingModal').modal({ backdrop: 'static', keyboard: false });
+            var shipmentIndex = $(this).attr("data-shipment-index");
+            var ticketNumber = $("#ticketId" + shipmentIndex).val();
+            var deliveryDate = $("#DeliveryDate").val();
+            
+
+            var isShowFacilito = false;
+            //console.log(isShowFacilito);
+            //alert(isShowFacilito);
+
+            if (isShowFacilito === true)
+            {
+
+            $.ajax({
+                url: "/es/Tracking/GetTrackingCourtesyWaybill",
+                type: "POST",
+                data: { shipmentIndex: shipmentIndex, ticketNumber: ticketNumber, deliveryDate: deliveryDate }
+
+            })
+                .done(function (partialViewResult) {
+                    if (!(partialViewResult === null || partialViewResult === "")) {
+                        $("#courtesyWaybillModal" + shipmentIndex + "> div > div > .courtesyWaybill >.courtesyWaybillResult").html(partialViewResult);
+                        $('#LoadingModal').modal("hide");
+                    }
+                    else {
+
+                        // $('#CloseCourtesyModal').trigger('click');
+                        // mensaje = 'Guia de Cortesia no disponible en este momento, intente mas tarde por este medio.';
+                        //Swal.fire({ position: 'top', type: 'info', showCloseButton: true,  showConfirmButton: false, title: mensaje, customClass: { title: 'HelveticaMed', confirmButton: 'HelveticaRoman btn btn-primary' } });
+                        $('#CloseCourtesyModal').trigger('click');
+                        $('#CourtesyWbNoInfoModal').modal();
+                        $('#LoadingModal').modal("hide");
+                    }
+
+                });
+            }
+            else {
+                $('#CloseCourtesyModal').trigger('click');
+                $('#CourtesyWbNoInfoModal').modal();
+                $('#LoadingModal').modal("hide");
+            }
+
+            //.fail(function (partialViewResult) {
+
+
+            //    $('#CloseCourtesyModal').trigger('click');
+            //        $('#CourtesyWbNoInfoModal').modal();
+            //        $('#LoadingModal').modal("hide");
+
+
+            //    });
+            //$('#LoadingModal').modal("hide");
+        });
+    });
+
+
+    // Deshabilita la tecla F12
+    //    document.addEventListener("keydown", function (event) {
+    //    if (event.keyCode === 123) {
+    //        event.preventDefault();
+    //    }
+    //});
+
+    //    // También puedes deshabilitar el clic derecho para prevenir "Inspeccionar elemento"
+    //    document.addEventListener("contextmenu", function (e) {
+    //        e.preventDefault();
+    //});
+
+
+</script>
+
+
+<style>
+
+
+#pleaseWaitDialog {
+    background-color:transparent;
+
+}
+
+.modal {
+}
+.vertical-alignment-helper {
+    display:table;
+    height: 100%;
+    width: 100%;
+}
+.vertical-align-center {
+    /* To center vertically */
+    
+    vertical-align:central;
+    padding-top:150px;
+}
+    /*.modal-content {
+        /* Bootstrap sets the size of the modal in the modal-dialog class, we need to inherit it */
+        width: inherit;
+        height: inherit;
+        /* To center horizontally
+            margin: 0 auto;
+        border: none;
+        min-height: 1px;
+        padding: 0px;
+        margin: 0px 0;
+        margin-left: 0px auto;
+        margin-right: 0px auto;
+        margin-top: 0px auto;
+        margin-bottom: 0px auto;
+    }*/
+.modal-content {
+    border: none;
+}
+
+    .Loading {
+        border: none;
+     
+    }
+</style>
+
+
+
+
+
+
+
+<div class="modal fade bd-example-modal-sm"  id="LoadingModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class=" vertical-align-center text-center">
+            <span class="fas fa-shipping-fast faa-passing animated fa-7x" style="color:white"></span><br />
+            <span class="text-center" style="color:white; font-size:20px;">Cargando...</span>
+        </div>
+        
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $(".pod").on("click", function () {
+            var shipmentIndex = $(this).attr("data-shipment-index");
+            $('#LoadingModal').modal({ backdrop: 'static', keyboard: false });
+            $.ajax({
+                url: "/es/Tracking/GetTrackingPODPDFBase64",
+                type: "POST",
+                data: { shipmentIndex: shipmentIndex }
+            })
+                .done(function (partialViewResult) {
+                    if (!(partialViewResult === null || partialViewResult === "")) {
+                        $("#podModal" + shipmentIndex + "> div > div > .podPdfBase64").html(partialViewResult);
+                        $('#LoadingModal').modal("hide");
+                    }
+                    else {
+                        $('#PODDiv').trigger('click');
+                        $('#LoadingModal').modal("hide");
+                        $('#PODNoInfoModal').modal({ backdrop: 'static', keyboard: false })
+                    }
+                });
+        });
+    });
+</script>
+<script>
+    $("#btn_Reporte_18C5349EE883495DA18824874DB266AB").click(function ()
+    {
+        $('#LoadingModal').modal({ backdrop: 'static', keyboard: false });
+        var getReport = 1+"";
+        var data_guia = $(this).data('guia');
+        var data_cliente = $(this).data('cliente');
+        var data_emailClient = $(this).data('emailclient');
+        var data_numClient = $(this).data('numclient');
+        var data_fecharecoleccion = $(this).data('fecharecoleccion');
+        var data_destino = $(this).data('destino');
+        var data_phone = $(this).data('phone');
+        var guia =
+        {
+            waybill: data_guia,
+            cliente: data_cliente,
+            emailClient: data_emailClient,
+            numClient: data_numClient,
+            fecharecoleccion: data_fecharecoleccion,
+            destino: data_destino,
+            phone: data_phone
+        };
+        if (getReport == "0")
+        {
+            $.ajax({
+            url: '/es/ReportService/GetMotivos',
+            type: "POST",
+            data: { model: guia },
+            }).done(function (result)
+            {
+                $('#content_18C5349EE883495DA18824874DB266AB').html(result);
+                $('#myModal').modal('show');
+                $('#LoadingModal').modal("hide");
+            }).fail(function (result)
+            {
+                $('#LoadingModal').modal("hide");
+                $('#ReportServiceNoInfoModal').modal({ backdrop: 'static', keyboard: false });
+            });
+        }
+        else if (getReport == "1")
+        {
+            $.ajax({
+            url: '/es/ReportService/GetReportServer',
+            type: "POST",
+            data: { waybill: data_guia ,GUID:"18C5349EE883495DA18824874DB266AB" },
+            }).done(function (result)
+            {
+                $('#content_18C5349EE883495DA18824874DB266AB').html(result);
+                $('#myModalReportGet_18C5349EE883495DA18824874DB266AB').modal('show');
+                $('#LoadingModal').modal("hide");
+            }).fail(function (result)
+            {
+                $('#LoadingModal').modal("hide");
+                $('#ReportServiceNoInfoModal').modal({ backdrop: 'static', keyboard: false });
+            });
+        }
+    });
+</script><style>
+    .shipmentInfoHistory {
+        font-family: HelveticaRoman;
+        width: var(--bg-grl-width);
+        margin: 1.5% auto 0 auto;
+    }
+
+        .shipmentInfoHistory > .backgroundGray {
+            border-radius: 2vw;
+        }
+
+            .shipmentInfoHistory > .backgroundGray > div {
+                width: 13%;
+                margin-left: 3%;
+            }
+
+                .shipmentInfoHistory > .backgroundGray > div > p {
+                    display: inline-block;
+                    margin: 5% 0 5% 1%;
+                    color: var(--clr-blue-navy);
+                    font-size: 1.4vw;
+                }
+
+                .shipmentInfoHistory > .backgroundGray > div > div {
+                    display: inline-block;
+                    margin-left: 3%;
+                }
+
+    .rowDown {
+        font-size: 1.1vw;
+    }
+
+    .shipmentEvents {
+        margin-top: 2%;
+    }
+
+        .shipmentEvents > div > p {
+            text-decoration: underline;
+            color: var(--clr-blue-light);
+            /*var(--clr-gray-forth);*/
+            font-size: 1.2vw;
+            margin-left: 4%;
+            width: 17%;
+        }
+
+        .shipmentEvents > .container {
+            font-family: HelveticaRoman;
+            font-size: 1.2vw;
+            color: var(--clr-gray-forth);
+            line-height: 2.4vw;
+        }
+
+    .historyStEventStatus {
+        margin: 0px -39px;
+        width: 2vw;
+        height: 2vw;
+        border-radius: 1em;
+         margin-bottom: 25px;
+    }
+
+    .historyEventRow {
+        display: flex;
+        margin-top: 1%;
+        /*border-bottom: 0.1vw solid var(--clr-gray-second);*/
+        padding-bottom: 0.5%;
+    }
+
+    .historyEventBottom {
+        /*position: absolute;*/
+        bottom: 0;
+    }
+
+    .NoHistory{
+      margin-top: 15px;
+
+    }
+
+
+    .eventInfo:first-child {
+    }
+</style>
+
+<div class="shipmentInfoHistory ">
+    <div class="backgroundGray">
+        
+
+        <div id="ctnHist" class="cursorPointer showHistory" data-shipment-index="6015491862604H80002045">
+            <p>
+                Ver detalles
+            </p>
+
+            <div>
+                <div class="glyphicon glyphicon-chevron-down rowDown"></div>
+            </div>
+        </div>
+
+
+        <div id="showHistoryBtn6015491862604H80002045" hidden data-toggle="collapse" data-target="#shipmentEventsDivId6015491862604H80002045">
+
+        </div>
+    </div>
+
+            <div id="shipmentEventsDivId6015491862604H80002045" class="collapse shipmentEvents">
+                <div class="showCompleteHistory" data-shipmentIndex=6015491862604H80002045>
+                    
+                </div>
+
+                <div id="historyEventsId6015491862604H80002045" class="container historyEventsDiv ">
+               
+                            
+<style>
+
+    img {
+        vertical-align: middle;
+    }
+
+    .img-responsive {
+        display: block;
+        height: auto;
+        max-width: 100%;
+    }
+
+
+    .timeline-Border {
+        border-bottom: 0.1vw solid #E6E6E6;
+        margin-left: 50px;
+        margin-right: 30px;
+    }
+
+
+
+    .img-rounded {
+        border-radius: 3px;
+    }
+
+    .img-rounded {
+        border-radius: 3px;
+    }
+
+    .img-thumbnail {
+        background-color: #fff;
+        border: 1px solid #ededf0;
+        border-radius: 3px;
+        display: inline-block;
+        height: auto;
+        line-height: 1.428571429;
+        max-width: 100%;
+        moz-transition: all .2s ease-in-out;
+        o-transition: all .2s ease-in-out;
+        padding: 2px;
+        transition: all .2s ease-in-out;
+        webkit-transition: all .2s ease-in-out;
+    }
+
+    .img-circle {
+        border-radius: 50%;
+    }
+
+    .timeline-centered {
+        position: relative;
+        margin-bottom: 30px;
+    }
+
+        .timeline-centered:before, .timeline-centered:after {
+            content: " ";
+            display: table;
+        }
+
+        .timeline-centered:after {
+            clear: both;
+        }
+
+        .timeline-centered:before, .timeline-centered:after {
+            content: " ";
+            display: table;
+        }
+
+        .timeline-centered:after {
+            clear: both;
+        }
+
+        .timeline-centered:before {
+            content: '';
+            position: absolute;
+            display: block;
+            width: 4px;
+            background: #f5f5f6;
+            /*left: 50%;*/
+            top: 20px;
+            bottom: 20px;
+            margin-left: 37px;
+        }
+
+        .timeline-centered .timeline-entry {
+            position: relative;
+            /*width: 50%;
+        float: right;*/
+            margin-top: 5px;
+            margin-left: 30px;
+            margin-bottom: 10px;
+            clear: both;
+        }
+
+            .timeline-centered .timeline-entry:before, .timeline-centered .timeline-entry:after {
+                content: " ";
+                display: table;
+            }
+
+            .timeline-centered .timeline-entry:after {
+                clear: both;
+            }
+
+            .timeline-centered .timeline-entry:before, .timeline-centered .timeline-entry:after {
+                content: " ";
+                display: table;
+            }
+
+            .timeline-centered .timeline-entry:after {
+                clear: both;
+            }
+
+            .timeline-centered .timeline-entry.begin {
+                margin-bottom: 0;
+            }
+
+            .timeline-centered .timeline-entry.left-aligned {
+                float: left;
+            }
+
+                .timeline-centered .timeline-entry.left-aligned .timeline-entry-inner {
+                    margin-left: 0;
+                    margin-right: -18px;
+                }
+
+                    .timeline-centered .timeline-entry.left-aligned .timeline-entry-inner .timeline-time {
+                        left: auto;
+                        right: -100px;
+                        text-align: left;
+                    }
+
+                    .timeline-centered .timeline-entry.left-aligned .timeline-entry-inner .timeline-icon {
+                        float: right;
+                    }
+
+                    .timeline-centered .timeline-entry.left-aligned .timeline-entry-inner .timeline-label {
+                        margin-left: 0;
+                        margin-right: 70px;
+                    }
+
+                        .timeline-centered .timeline-entry.left-aligned .timeline-entry-inner .timeline-label:after {
+                            left: auto;
+                            right: 0;
+                            margin-left: 0;
+                            margin-right: -9px;
+                            -moz-transform: rotate(180deg);
+                            -o-transform: rotate(180deg);
+                            -webkit-transform: rotate(180deg);
+                            -ms-transform: rotate(180deg);
+                            transform: rotate(180deg);
+                        }
+
+            .timeline-centered .timeline-entry .timeline-entry-inner {
+                position: relative;
+                margin-left: -20px;
+            }
+
+                .timeline-centered .timeline-entry .timeline-entry-inner:before, .timeline-centered .timeline-entry .timeline-entry-inner:after {
+                    content: " ";
+                    display: table;
+                }
+
+                .timeline-centered .timeline-entry .timeline-entry-inner:after {
+                    clear: both;
+                }
+
+                .timeline-centered .timeline-entry .timeline-entry-inner:before, .timeline-centered .timeline-entry .timeline-entry-inner:after {
+                    content: " ";
+                    display: table;
+                }
+
+                .timeline-centered .timeline-entry .timeline-entry-inner:after {
+                    clear: both;
+                }
+
+                .timeline-centered .timeline-entry .timeline-entry-inner .timeline-time {
+                    position: absolute;
+                    left: -100px;
+                    text-align: right;
+                    padding: 10px;
+                    -webkit-box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    box-sizing: border-box;
+                }
+
+                    .timeline-centered .timeline-entry .timeline-entry-inner .timeline-time > span {
+                        display: block;
+                    }
+
+                        .timeline-centered .timeline-entry .timeline-entry-inner .timeline-time > span:first-child {
+                            font-size: 15px;
+                            font-weight: bold;
+                        }
+
+                        .timeline-centered .timeline-entry .timeline-entry-inner .timeline-time > span:last-child {
+                            font-size: 12px;
+                        }
+
+                .timeline-centered .timeline-entry .timeline-entry-inner .timeline-icon {
+                    background: #fff;
+                    color: #737881;
+                    display: block;
+                    width: 30px;
+                    height: 30px;
+                    -webkit-background-clip: padding-box;
+                    -moz-background-clip: padding;
+                    background-clip: padding-box;
+                    -webkit-border-radius: 20px;
+                    -moz-border-radius: 20px;
+                    border-radius: 20px;
+                    text-align: center;
+                    -moz-box-shadow: 0 0 0 3px #f5f5f6;
+                    -webkit-box-shadow: 0 0 0 3px #f5f5f6;
+                    box-shadow: 0 0 0 3px #f5f5f6;
+                    line-height: 20px;
+                    font-size: 10px;
+                    float: left;
+                }
+
+                    .timeline-centered .timeline-entry .timeline-entry-inner .timeline-icon.bg-primary {
+                        background-color: #303641;
+                        color: #fff;
+                    }
+
+                    .timeline-centered .timeline-entry .timeline-entry-inner .timeline-icon.bg-secondary {
+                        background-color: #ee4749;
+                        color: #fff;
+                    }
+
+                    .timeline-centered .timeline-entry .timeline-entry-inner .timeline-icon.bg-success {
+                        background-color: #00a651;
+                        color: #fff;
+                    }
+
+                    .timeline-centered .timeline-entry .timeline-entry-inner .timeline-icon.bg-info {
+                        background-color: #21a9e1;
+                        color: #fff;
+                    }
+
+                    .timeline-centered .timeline-entry .timeline-entry-inner .timeline-icon.bg-warning {
+                        background-color: #fad839;
+                        color: #fff;
+                    }
+
+                    .timeline-centered .timeline-entry .timeline-entry-inner .timeline-icon.bg-danger {
+                        background-color: #cc2424;
+                        color: #fff;
+                    }
+
+                .timeline-centered .timeline-entry .timeline-entry-inner .timeline-label {
+                    position: relative;
+                    background: #f5f5f6;
+                    padding: 1em;
+                    margin-left: 60px;
+                    -webkit-background-clip: padding-box;
+                    -moz-background-clip: padding;
+                    background-clip: padding-box;
+                    -webkit-border-radius: 3px;
+                    -moz-border-radius: 3px;
+                    border-radius: 3px;
+                }
+
+                    .timeline-centered .timeline-entry .timeline-entry-inner .timeline-label:after {
+                        content: '';
+                        display: block;
+                        position: absolute;
+                        width: 0;
+                        height: 0;
+                        border-style: solid;
+                        border-width: 9px 9px 9px 0;
+                        border-color: transparent #f5f5f6 transparent transparent;
+                        left: 0;
+                        top: 10px;
+                        margin-left: -9px;
+                    }
+
+                    .timeline-centered .timeline-entry .timeline-entry-inner .timeline-label h2, .timeline-centered .timeline-entry .timeline-entry-inner .timeline-label p {
+                        color: #737881;
+                        font-family: "Noto Sans",sans-serif;
+                        font-size: 12px;
+                        margin: 0;
+                        line-height: 1.428571429;
+                    }
+
+                        .timeline-centered .timeline-entry .timeline-entry-inner .timeline-label p + p {
+                            margin-top: 15px;
+                        }
+
+                    .timeline-centered .timeline-entry .timeline-entry-inner .timeline-label h2 {
+                        font-size: 16px;
+                        margin-bottom: 10px;
+                    }
+
+                        .timeline-centered .timeline-entry .timeline-entry-inner .timeline-label h2 a {
+                            color: #303641;
+                        }
+
+                        .timeline-centered .timeline-entry .timeline-entry-inner .timeline-label h2 span {
+                            -webkit-opacity: .6;
+                            -moz-opacity: .6;
+                            opacity: .6;
+                            -ms-filter: alpha(opacity=60);
+                            filter: alpha(opacity=60);
+                        }
+
+    .positionA {
+        padding: 7px 9px;
+    }
+
+    timelinever {
+        content: '';
+        /* position: absolute; */
+        /* display: block; */
+        width: 3px;
+        height: 117px;
+        /* background: #f5f5f6; */
+        border: 2px dotted;
+        /* left: 50%; */
+        top: 16px;
+        margin-right: none;
+        margin-bottom: -117px;
+        margin-left: 11px;
+    }
+
+    .rowDownIcon {
+        margin-left: 7px;
+        color: #fff;
+        font-size: 13px;
+    }
+
+
+
+    .vertical_dotted_line {
+        border-left: 3.5px dotted var(--clr-blue-navy);
+        height: auto;
+        margin-top: -6px;
+    }
+
+
+    .EventBotoom {
+        margin-bottom: 35px;
+    }
+
+
+    .new {
+        border-bottom: 0.1vw solid var(--clr-gray-second);
+        margin-left: 24px;
+        margin-right: 24px;
+    }
+
+    .NoHistory {
+        margin-top: 15px;
+    }
+</style>
+
+
+
+
+                <div class="NoHistory">
+                    
+
+
+
+<style>
+
+    .HistoryNoInfo {
+        font-family: HelveticaRoman;
+        width: 100%;
+        margin: -0.5% 168px 0px 2px;
+        border-radius: 2vw;
+        padding-top: 10px;
+        padding-bottom: 8px;
+        background-color: #fff;
+    }
+
+    .backgroundGray {
+        background-color: var(--clr-gray-first);
+    }
+
+    .HistoryNoInfo > div > p {
+        display: inline-block;
+        color: var(--clr-blue-navy);
+        font-size: 15px;
+        margin-left: 17px;
+        margin-top: 5px;
+    }
+    
+</style>
+
+
+<div >
+    <div class="HistoryNoInfo">
+        <div>
+            <p style="margin-left: 205px;">
+               Por el momento, no hay información que mostrar en el detalle, el envío aún no ha sido operado.
+            </p><br />
+            <p style="margin-left: 310px;">
+                Una vez que presente movimiento, podrás consultarlo.
+            </p>
+        </div>
+       
+    </div>
+    
+</div>
+
+                </div>
+
+
+
+
+<script>
+
+    //Toggle class in row icon ('Ver Historia')
+    $(".historyEventBottom > .historyStEventStatus").click(function () {
+        $("span", this).toggleClass("glyphicon-chevron-down  glyphicon-chevron-up ");
+
+    });
+
+    
+
+    
+
+
+
+    //$(document).ready(function () {
+    //    $('.shipmentInfoHistory > .backgroundGray > div').click(function () {
+    //        if ($("div > div", this).hasClass("glyphicon rowDown glyphicon-chevron-up")) {
+    //            $(".shipmentInfoHistory > .backgroundGray > div", this).removeClass("showHistory");
+    //        }
+    //    });
+    //});
+
+
+
+
+
+</script>                     
+                   
+                </div>
+            </div>
+ 
+</div>
+</div>
+
+    </div>
+</div>
+<div>
+   
+    <script>
+    jQuery(document).ready(function () {
+            
+    });
+    </script>
+
+</div>
+
+
+        </div>
+
+
+<style>
+
+
+#pleaseWaitDialog {
+    background-color:transparent;
+
+}
+
+.modal {
+}
+.vertical-alignment-helper {
+    display:table;
+    height: 100%;
+    width: 100%;
+}
+.vertical-align-center {
+    /* To center vertically */
+    
+    vertical-align:central;
+    padding-top:150px;
+}
+    /*.modal-content {
+        /* Bootstrap sets the size of the modal in the modal-dialog class, we need to inherit it */
+        width: inherit;
+        height: inherit;
+        /* To center horizontally
+            margin: 0 auto;
+        border: none;
+        min-height: 1px;
+        padding: 0px;
+        margin: 0px 0;
+        margin-left: 0px auto;
+        margin-right: 0px auto;
+        margin-top: 0px auto;
+        margin-bottom: 0px auto;
+    }*/
+.modal-content {
+    border: none;
+}
+
+    .Loading {
+        border: none;
+     
+    }
+</style>
+
+
+
+
+
+
+
+<div class="modal fade bd-example-modal-sm"  id="LoadingModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class=" vertical-align-center text-center">
+            <span class="fas fa-shipping-fast faa-passing animated fa-7x" style="color:white"></span><br />
+            <span class="text-center" style="color:white; font-size:20px;">Cargando...</span>
+        </div>
+        
+    </div>
+</div>    </div>
+
+<script>
+    $(document).ready(function () {
+        $('body').tooltip({
+            selector: "[data-tooltip=tooltip]",
+            container: "body",
+            html: true
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+
+        /***********_ShipmentSateStatusLine.cshtml****************/
+        //Toggle class in plus-minus icons
+        $(".shipCompleteInfo.collapse").on('shown.bs.collapse', function () {
+            var attr = $(this).attr('data-shipCompleteInfo');
+            if (typeof attr !== typeof undefined && attr !== false) {
+                var shipmentIndex = $(this).attr("data-shipment-index");
+                var toggleIconElement = $("span[data-shipment-index='" + shipmentIndex + "']");
+                toggleIconElement.removeClass("glyphicon-plus");
+                toggleIconElement.addClass("glyphicon-minus");
+                toggleIconElement.attr("style", "margin-right: 0.2vw");
+            }
+        });
+        $(".shipCompleteInfo.collapse").on('hidden.bs.collapse', function () {
+            var attr = $(this).attr('data-shipCompleteInfo');
+            if (typeof attr !== typeof undefined && attr !== false) {
+                var shipmentIndex = $(this).attr("data-shipment-index");
+                var toggleIconElement = $("span[data-shipment-index='" + shipmentIndex + "']");
+                toggleIconElement.removeClass("glyphicon-minus");
+                toggleIconElement.addClass("glyphicon-plus");
+                toggleIconElement.attr("style", "margin-right: 0");
+            }
+        });
+        /********_ShipmentHistory.cshtml************/
+        //Show-hide history complete info ('Mostrar historia Completa')
+        $(".showCompleteHistory").click(function () {
+            var hasOneCollapsedAlmost = false;
+            var shipmentIndex = $(this).attr("data-shipmentIndex");
+            var remainingEvents = $(".collapse .remainingHistoryEvents[data-shipmentIndex='"
+                + shipmentIndex + "']").each(function () {
+                    if (!($(this).attr("aria-expanded") === "true")) {
+                        hasOneCollapsedAlmost = true;
+                        return false;
+                    }
+                });
+            if (hasOneCollapsedAlmost) {
+                remainingEvents.collapse("show");
+            }
+            else {
+                remainingEvents.collapse("hide");
+            }
+
+        });
+        //Toggle class in row icon ('Ver Historia')
+        $(".shipmentInfoHistory > .backgroundGray > div").click(function () {
+            $("div > div", this).toggleClass("glyphicon-chevron-down glyphicon-chevron-up");
+
+        });
+        /*****Calendar Modal*****/
+        var container = ".calendarDiv";
+        var options = {
+            format: 'mm/dd/yyyy',
+            container: container,
+            todayHighlight: false,
+            autoclose: false,
+            daysOfWeekDisabled: [0, 1, 2, 3, 4, 5, 6],
+            disableTouchKeyboard: true
+        };
+        $(".calendarDiv").datepicker(options);
+        //Void that to select month in calendar its expand to choice in month list and years list
+        $(".datepicker-switch").click(function (e) {
+            e.preventDefault();
+            return false;
+        });
+        /***Delivery in Store Modal(show if it exists)***/
+        $("#deliveryInStoreModal").modal("show");
+        /****Initialize *tooltips****/
+        $('[data-toggle="tooltip"]').tooltip();
+
+        $(".showHistory").on("click", function () {
+            var waybill = $(this).attr("data-shipment-index");
+            var historyRows = $("#shipmentEventsDivId" + waybill + " > .historyEventsDiv > .historyEventRow");
+            $('#LoadingModal').modal({ backdrop: 'static', keyboard: false });
+            if (historyRows.length) {
+                $("#showHistoryBtn" + waybill).click();
+                $('#LoadingModal').modal("hide");
+            } else {
+                var getCollapse = $("#shipmentEventsDivId" + waybill).attr("aria-expanded");
+                if (getCollapse == "false" || (typeof getCollapse == "undefined")) {
+
+                    $.ajax({
+                        url: "/es/Tracking/GetTrackingItemHistory",
+                        //url: /es/TrackingController/GetTrackingItemHistory,
+                        type: "POST",
+                        data: { waybill: waybill }
+                    })
+                        .done(function (partialViewResult) {
+                            //alert(partialViewResult);
+                            $("#historyEventsId" + waybill).html(partialViewResult);
+                            $("#showHistoryBtn" + waybill).click();
+                            $('#LoadingModal').modal("hide");
+                            //if (!(partialViewResult === null || partialViewResult === "")) {
+                            //    $("#historyEventsId" + waybill).html(partialViewResult);
+                            //    $("#showHistoryBtn" + waybill).click();
+                            //    $('#LoadingModal').modal("hide");
+                            //}
+                            //else {
+
+                            //    $('#LoadingModal').modal("hide");
+                            //   $('#HistoryNoInfoModal').modal({ backdrop: 'static', keyboard: false })
+
+                            //}
+
+                            if (1 == 1) {
+                                $(".showCompleteHistory").click();
+                            }
+                        })
+                        .fail(function (partialViewResult) {
+                            $('#LoadingModal').modal("hide");
+                            $('#HistoryNoInfoModal').modal({ backdrop: 'static', keyboard: false })
+                        })
+                        ;
+                }
+                else {
+                    $('#LoadingModal').modal("hide");
+                    $("#showHistoryBtn" + waybill).click();
+                }
+                //$('#LoadingModal').modal("hide");
+            }
+        });
+
+
+        if (1 == 1) {
+
+            $(".showHistory").click();
+
+        }
+
+    });
+    /********Tracking square*******/
+    //Click to redirect to shipment detail
+    $.redirectPost
+    $(".square.glyphicon.glyphicon-plus").click(function () {
+      $('#LoadingModal').modal({ backdrop: 'static', keyboard: false });
+    });
+    //Click to redirect to squares
+    $("#redirectHistoryBack").click(function () {
+
+
+        history.back(1);
+
+        //history.back();
+
+    });
+
+
+
+</script>
+    
+    <script src="/bundles/bootstrap?v=o54gqAciR7yRzISEG5NiTRyviko6cwg1ReXcSjZ8-j41"></script>
+
+    
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQWQUvuWzVB0MwiqcQGKvbVuZ2tatcC8U"></script>
+    <script src="/Scripts/jquery.connections.js"></script>
+    <script src="/Scripts/iframeResizer.contentWindow.min.js"></script>
+    <script src="/Scripts/bootstrap-select.min.js"></script>
+</body>
+</html>
+<script id="f5_cspm">(function(){var f5_cspm={f5_p:'DJIOKNLBCNEDBCFCPEJOGKHPLFCAJOKLJOPGHBBNHJOJNJKDNCEHNBCHMAGMDGDOHDOBAKOBAADBFOEOONCAIECCAAAAPKLLMJMHLAFDBHLPAFOKDCKBALIFGACJHGPO',setCharAt:function(str,index,chr){if(index>str.length-1)return str;return str.substr(0,index)+chr+str.substr(index+1);},get_byte:function(str,i){var s=(i/16)|0;i=(i&15);s=s*32;return((str.charCodeAt(i+16+s)-65)<<4)|(str.charCodeAt(i+s)-65);},set_byte:function(str,i,b){var s=(i/16)|0;i=(i&15);s=s*32;str=f5_cspm.setCharAt(str,(i+16+s),String.fromCharCode((b>>4)+65));str=f5_cspm.setCharAt(str,(i+s),String.fromCharCode((b&15)+65));return str;},set_latency:function(str,latency){latency=latency&0xffff;str=f5_cspm.set_byte(str,40,(latency>>8));str=f5_cspm.set_byte(str,41,(latency&0xff));str=f5_cspm.set_byte(str,35,2);return str;},wait_perf_data:function(){try{var wp=window.performance.timing;if(wp.loadEventEnd>0){var res=wp.loadEventEnd-wp.navigationStart;if(res<60001){var cookie_val=f5_cspm.set_latency(f5_cspm.f5_p,res);window.document.cookie='f5avr1578938139aaaaaaaaaaaaaaaa_cspm_='+encodeURIComponent(cookie_val)+';path=/;'+'';}
+return;}}
+catch(err){return;}
+setTimeout(f5_cspm.wait_perf_data,100);return;},go:function(){var chunk=window.document.cookie.split(/\s*;\s*/);for(var i=0;i<chunk.length;++i){var pair=chunk[i].split(/\s*=\s*/);if(pair[0]=='f5_cspm'&&pair[1]=='1234')
+{var d=new Date();d.setTime(d.getTime()-1000);window.document.cookie='f5_cspm=;expires='+d.toUTCString()+';path=/;'+';';setTimeout(f5_cspm.wait_perf_data,100);}}}}
+f5_cspm.go();}());</script>

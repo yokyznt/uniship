@@ -1,0 +1,10 @@
+{
+  "name": "uniship-server",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "@upstash/redis": "^1.35.0",
+    "jose": "^6.0.0"
+  }
+}
