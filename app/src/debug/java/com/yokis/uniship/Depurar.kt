@@ -19,6 +19,7 @@ class Depurar : BroadcastReceiver() {
                 when (intent.getStringExtra("t")) {
                     "aer" -> Log.d("UniShip", "dep aer -> " + runCatching { kotlinx.coroutines.withContext(Dispatchers.IO) { AliExpress.rastreo(ctx, intent.getStringExtra("id")!!) }.joinToString { e -> "${e.guia} ${e.paqueteria} eta=${e.eta} ${e.movimientos.size} mov: " + e.movimientos.take(3).joinToString(" | ") { it.descripcion + "/" + it.estado } } }.let { it.getOrNull() ?: it.exceptionOrNull().toString() })
                     "jt" -> Log.d("UniShip", "dep jt cel=${UniShipApp.prefs.ultimos4()?.let { "****" } ?: "null"} -> " + runCatching { com.yokis.uniship.paqueterias.JtExpress.rastrear(intent.getStringExtra("g")!!).size.toString() }.let { it.getOrNull() ?: it.exceptionOrNull().toString() })
+                    "conectar" -> com.yokis.uniship.tiendas.ConectarTienda.abrir(ctx.applicationContext.let { c -> object : android.content.ContextWrapper(c) { override fun startActivity(i: Intent) { c.startActivity(i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) } } }, com.yokis.uniship.tiendas.Tienda.valueOf(intent.getStringExtra("tienda")!!))
                     "temu" -> Log.d("UniShip", "dep temu -> " + runCatching { Temu.sincronizar(ctx) }.let { it.getOrNull() ?: it.exceptionOrNull()?.stackTraceToString()?.take(1500) })
                     else -> Log.d("UniShip", "dep ae -> " + runCatching { AliExpress.sincronizar(ctx) }.let { it.getOrNull() ?: it.exceptionOrNull()?.stackTraceToString()?.take(1500) })
                 }

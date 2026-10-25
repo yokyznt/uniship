@@ -128,7 +128,8 @@ fun Detalle(id: Long, volver: () -> Unit) {
                 if (eventos.isEmpty()) Text(
                     when {
                         p.paqueteria == "jt" && celular.length != 4 -> "J&T muestra el rastreo solo con los últimos 4 dígitos de tu celular. Ponlos en Ajustes > Rastreo y actualiza."
-                        p.guia == null -> "Este pedido no tiene guía pública. Aquí aparecerán los avisos que mande la tienda."
+                        p.guia == null -> "Todavía no tiene guía. Cuando la tienda la asigne, cópiala o compártela y UniShip la agrega sola."
+                        p.ultimoEvento?.contains("dígitos") == true -> p.ultimoEvento!! + ". Cámbialos en Ajustes > Rastreo."
                         p.paqueteria == "fedex" && p.fallos > 0 -> "FedEx a veces bloquea las consultas automáticas. Puedes verla directo en su página."
                         p.estado == Estado.SIN_DATOS -> "La paquetería todavía no muestra información de esta guía. Revisa que el número y la paquetería sean correctos."
                         else -> "Todavía no hay movimientos. UniShip revisa cada 2 horas."
@@ -136,6 +137,8 @@ fun Detalle(id: Long, volver: () -> Unit) {
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
+                val appTienda = remember(p.tienda) { com.yokis.uniship.lector.Fuentes.paqueteDe(p.tienda)?.let { ctx.packageManager.getLaunchIntentForPackage(it) } }
+                if (p.guia == null && appTienda != null) TextButton(onClick = { runCatching { ctx.startActivity(appTienda) } }) { Text("Abrir ${p.tienda}") }
                 val c = Registro.porId(p.paqueteria)
                 if (eventos.isEmpty() && p.guia != null && c != null && p.fallos > 0) TextButton(
                     onClick = { abrirWeb(ctx, Uri.parse(c.urlPublica(p.guia))) },

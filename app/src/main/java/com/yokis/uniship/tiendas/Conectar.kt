@@ -108,6 +108,7 @@ class ConectarTienda : ComponentActivity() {
             CookieManager.getInstance().flush()
             val ok = when (t) {
                 Tienda.ALIEXPRESS -> AliExpress.probar(this@ConectarTienda)
+                Tienda.AMAZON -> Amazon.probar(this@ConectarTienda)
                 Tienda.TEMU -> true
             }
             verificando = false

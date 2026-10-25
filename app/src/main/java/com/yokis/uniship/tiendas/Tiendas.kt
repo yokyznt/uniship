@@ -10,9 +10,14 @@ import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import java.util.concurrent.TimeUnit
 
-enum class Tienda(val nombre: String, val entrada: String, val dominio: String, val listo: Regex) {
+enum class Tienda(val nombre: String, val entrada: String, val dominio: String, val listo: Regex, val visible: Boolean = true) {
     ALIEXPRESS("AliExpress", "https://login.aliexpress.com/?return_url=https%3A%2F%2Fm.aliexpress.com%2F", "https://www.aliexpress.com", Regex("^https://(m|www|es)\\.aliexpress\\.(com|us)")),
-    TEMU("Temu", "https://www.temu.com/mx/bgt_orders.html", "https://www.temu.com", Regex("temu\\.com/(mx/)?bgt_orders"))
+    AMAZON("Amazon", "https://www.amazon.com.mx/your-orders/orders", "https://www.amazon.com.mx", Regex("^https://www\\.amazon\\.com\\.mx/(your-orders|gp/css/order-history|gp/your-account/order-history|gp/homepage)")),
+    TEMU("Temu", "https://www.temu.com/mx/bgt_orders.html", "https://www.temu.com", Regex("temu\\.com/(mx/)?bgt_orders"), visible = false);
+
+    companion object {
+        val visibles get() = entries.filter { it.visible }
+    }
 }
 
 class SesionCaducada(val tienda: Tienda) : Exception("Vuelve a entrar a ${tienda.nombre}")
@@ -66,6 +71,7 @@ object Tiendas {
 
     suspend fun sincronizar(ctx: Context) {
         if (conectada(Tienda.ALIEXPRESS)) runCatching { AliExpress.sincronizar(ctx) }.onFailure { if (it is SesionCaducada) marcar(Tienda.ALIEXPRESS, true, true) }
+        if (conectada(Tienda.AMAZON)) runCatching { Amazon.sincronizar(ctx) }.onFailure { if (it is SesionCaducada) marcar(Tienda.AMAZON, true, true) }
         if (conectada(Tienda.TEMU)) runCatching { Temu.sincronizar(ctx) }.onFailure { if (it is SesionCaducada) marcar(Tienda.TEMU, true, true) }
     }
 }

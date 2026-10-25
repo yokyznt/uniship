@@ -45,6 +45,8 @@ object Fuentes {
 
     fun base(t: String) = Normalizer.normalize(t.lowercase(Locale.ROOT), Normalizer.Form.NFD).replace(Regex("\\p{M}+"), "")
 
+    fun paqueteDe(tienda: String?): String? = tienda?.let { t -> lista.entries.firstOrNull { it.value == t } ?.key }
+
     fun tiendaEnTexto(t: String): String? {
         val b = base(t)
         return tiendas.firstOrNull { b.contains(it.first) }?.second

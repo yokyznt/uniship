@@ -123,7 +123,7 @@ fun Ajustes(actividad: MainActivity, volver: () -> Unit, verPrivacidad: () -> Un
                 )
             }
             Seccion("Tiendas") {
-                com.yokis.uniship.tiendas.Tienda.entries.forEachIndexed { i, t ->
+                com.yokis.uniship.tiendas.Tienda.visibles.forEachIndexed { i, t ->
                     if (i > 0) HorizontalDivider()
                     val conectada = com.yokis.uniship.tiendas.Tiendas.conectada(t) && !com.yokis.uniship.tiendas.Tiendas.caducada(t)
                     when {
