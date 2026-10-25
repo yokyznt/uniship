@@ -66,8 +66,9 @@ class Rastreador(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx, 
             val guia = p.guia ?: return false
             val fija = Registro.porId(p.paqueteria)
             val candidatos = listOfNotNull(fija) + Registro.detectar(guia).filter { it.id != fija?.id }
+            var aviso: String? = null
             for (c in candidatos) {
-                val movs = runCatching { c.rastrear(guia) }.getOrNull().orEmpty()
+                val movs = runCatching { c.rastrear(guia) }.onFailure { e -> if (c.id == "jt" && e.message?.contains("dígitos") == true) aviso = "J&T dice que los 4 dígitos no coinciden con el celular de la dirección de envío" }.getOrNull().orEmpty()
                 if (movs.isEmpty()) continue
                 var actual = repo.paquetes.porId(p.id) ?: return false
                 if (actual.paqueteria != c.id) {
@@ -84,6 +85,7 @@ class Rastreador(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx, 
             repo.paquetes.actualizar(
                 actual.copy(
                     fallos = fallos,
+                    ultimoEvento = if (repo.eventos.listar(actual.id).isEmpty() && aviso != null) aviso else actual.ultimoEvento,
                     estado = if (fallos >= 3 && actual.estado == Estado.PENDIENTE) Estado.SIN_DATOS else actual.estado
                 )
             )
