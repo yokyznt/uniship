@@ -108,7 +108,7 @@ fun Ajustes(actividad: MainActivity, volver: () -> Unit, verPrivacidad: () -> Un
             Seccion("Rastreo") {
                 val guardado by UniShipApp.prefs.celular.collectAsState(initial = "")
                 var cel by remember(guardado) { mutableStateOf(guardado) }
-                Text("J&T Express pide los últimos 4 dígitos del celular que diste al comprar para mostrar el rastreo.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text("J&T Express pide los últimos 4 dígitos del celular que aparece en la dirección de envío del pedido (si mandaste a otra persona, son los de su celular).", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 OutlinedTextField(
                     value = cel,
                     onValueChange = { v ->
