@@ -235,7 +235,7 @@ object Dhl : Paqueteria {
     }
 
     override suspend fun rastrear(guia: String): List<Movimiento> {
-        val cuerpo = Navegador.capturar(urlPublica(guia), "/utapi", { estado, t -> estado == 200 && t.contains("shipments") || estado == 404 }) ?: return emptyList()
+        val cuerpo = Navegador.capturar(urlPublica(guia), "/utapi", { estado, t -> estado == 200 && t.contains("shipments") || estado == 404 }, esperaMs = 60_000) ?: return emptyList()
         return runCatching { parsear(cuerpo) }.getOrDefault(emptyList())
     }
 }
@@ -267,7 +267,7 @@ object FedEx : Paqueteria {
     }
 
     override suspend fun rastrear(guia: String): List<Movimiento> {
-        val cuerpo = Navegador.capturar(urlPublica(guia), "/track/v2/shipments", { estado, t -> estado == 200 && t.contains("packages") }) ?: return emptyList()
+        val cuerpo = Navegador.capturar(urlPublica(guia), "/track/v2/shipments", { estado, t -> estado == 200 && t.contains("packages") }, esperaMs = 90_000) ?: return emptyList()
         return runCatching { parsear(cuerpo) }.getOrDefault(emptyList())
     }
 }

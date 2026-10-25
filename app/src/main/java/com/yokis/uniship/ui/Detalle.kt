@@ -80,6 +80,7 @@ fun Detalle(id: Long, volver: () -> Unit) {
     var editar by remember { mutableStateOf(false) }
     var borrar by remember { mutableStateOf(false) }
     val p = paquete
+    val celular by UniShipApp.prefs.celular.collectAsState(initial = "")
 
     Scaffold(
         topBar = {
@@ -126,14 +127,20 @@ fun Detalle(id: Long, volver: () -> Unit) {
                 Spacer(Modifier.height(12.dp))
                 if (eventos.isEmpty()) Text(
                     when {
-                        p.paqueteria == "jt" -> "J&T muestra el rastreo solo con los últimos 4 dígitos de tu celular. Ponlos en Ajustes > Rastreo y actualiza."
+                        p.paqueteria == "jt" && celular.length != 4 -> "J&T muestra el rastreo solo con los últimos 4 dígitos de tu celular. Ponlos en Ajustes > Rastreo y actualiza."
                         p.guia == null -> "Este pedido no tiene guía pública. Aquí aparecerán los avisos que mande la tienda."
+                        p.paqueteria == "fedex" && p.fallos > 0 -> "FedEx a veces bloquea las consultas automáticas. Puedes verla directo en su página."
                         p.estado == Estado.SIN_DATOS -> "La paquetería todavía no muestra información de esta guía. Revisa que el número y la paquetería sean correctos."
                         else -> "Todavía no hay movimientos. UniShip revisa cada 2 horas."
                     },
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
+                val c = Registro.porId(p.paqueteria)
+                if (eventos.isEmpty() && p.guia != null && c != null && p.fallos > 0) TextButton(
+                    onClick = { abrirWeb(ctx, Uri.parse(c.urlPublica(p.guia))) },
+                    contentPadding = PaddingValues(0.dp)
+                ) { Text("Ver en ${c.nombre}", color = MaterialTheme.colorScheme.secondary) }
             }
             itemsIndexed(eventos, key = { _, e -> e.id }) { i, e -> Paso(e, primero = i == 0, ultimo = i == eventos.lastIndex) }
         }

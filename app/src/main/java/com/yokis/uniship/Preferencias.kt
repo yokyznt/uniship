@@ -22,12 +22,22 @@ class Preferencias(private val ctx: Context) {
     private val mlVerificador = stringPreferencesKey("ml_verificador")
     private val respaldo = longPreferencesKey("ultimo_respaldo")
     private val cel4 = stringPreferencesKey("cel4")
+    private val privacidad = androidx.datastore.preferences.core.intPreferencesKey("privacidad")
 
     val onboardingListo = ctx.almacen.data.map { it[onboarding] ?: false }
     val mlConectado = ctx.almacen.data.map { it[mlRefresco] != null }
     val ultimoRespaldo = ctx.almacen.data.map { it[respaldo] ?: 0L }
 
-    suspend fun terminarOnboarding() = ctx.almacen.edit { it[onboarding] = true }
+    suspend fun terminarOnboarding() = ctx.almacen.edit { it[onboarding] = true; it[privacidad] = com.yokis.uniship.ui.AvisoPrivacidad.VERSION }
+
+    val privacidadVista = ctx.almacen.data.map { it[privacidad] ?: 0 }
+    suspend fun aceptarPrivacidad() = ctx.almacen.edit { it[privacidad] = com.yokis.uniship.ui.AvisoPrivacidad.VERSION }
+
+    suspend fun borrarTodo() = ctx.almacen.edit {
+        it.clear()
+        it[onboarding] = true
+        it[privacidad] = com.yokis.uniship.ui.AvisoPrivacidad.VERSION
+    }
 
     suspend fun sesionMl(): SesionMl? {
         val d = ctx.almacen.data.first()

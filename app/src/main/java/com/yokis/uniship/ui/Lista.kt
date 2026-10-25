@@ -53,16 +53,26 @@ import com.yokis.uniship.data.Paquete
 import com.yokis.uniship.paqueterias.Registro
 import com.yokis.uniship.trabajo.Rastreador
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Lista(abrir: (Long) -> Unit, agregar: () -> Unit, ajustes: () -> Unit) {
+fun Lista(abrir: (Long) -> Unit, agregar: () -> Unit, ajustes: () -> Unit, verPrivacidad: () -> Unit) {
     val ctx = LocalContext.current
     val enCamino by UniShipApp.repo.paquetes.enCamino().collectAsState(initial = null)
     val terminados by UniShipApp.repo.paquetes.terminados().collectAsState(initial = emptyList())
     var pestana by rememberSaveable { mutableIntStateOf(0) }
     var lector by remember { mutableStateOf(true) }
     var refrescando by remember { mutableStateOf(false) }
+    val vista by UniShipApp.prefs.privacidadVista.collectAsState(initial = AvisoPrivacidad.VERSION)
+    val alcance = androidx.compose.runtime.rememberCoroutineScope()
+    if (vista < AvisoPrivacidad.VERSION) androidx.compose.material3.AlertDialog(
+        onDismissRequest = {},
+        title = { Text("Actualizamos el aviso de privacidad") },
+        text = { Text("Cambió lo que UniShip lee o guarda. Revísalo antes de seguir.") },
+        confirmButton = { TextButton(onClick = { alcance.launch { UniShipApp.prefs.aceptarPrivacidad() } }) { Text("Entendido", color = MaterialTheme.colorScheme.secondary) } },
+        dismissButton = { TextButton(onClick = verPrivacidad) { Text("Leer", color = MaterialTheme.colorScheme.secondary) } }
+    )
     LifecycleResumeEffect(Unit) {
         lector = Permisos.lectorActivo(ctx)
         onPauseOrDispose { }

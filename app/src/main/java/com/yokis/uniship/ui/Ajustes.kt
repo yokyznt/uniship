@@ -58,7 +58,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Ajustes(actividad: MainActivity, volver: () -> Unit) {
+fun Ajustes(actividad: MainActivity, volver: () -> Unit, verPrivacidad: () -> Unit) {
     val ctx = LocalContext.current
     val alcance = rememberCoroutineScope()
     var lector by remember { mutableStateOf(false) }
@@ -67,6 +67,7 @@ fun Ajustes(actividad: MainActivity, volver: () -> Unit) {
     var usuario by remember { mutableStateOf(Nube.usuario) }
     var ocupado by remember { mutableStateOf(false) }
     var borrarNube by remember { mutableStateOf(false) }
+    var borrarTodo by remember { mutableStateOf(false) }
     val ml by UniShipApp.prefs.mlConectado.collectAsState(initial = false)
     val respaldo by UniShipApp.prefs.ultimoRespaldo.collectAsState(initial = 0L)
     LifecycleResumeEffect(Unit) {
@@ -162,9 +163,12 @@ fun Ajustes(actividad: MainActivity, volver: () -> Unit) {
                     }
                 }
             }
-            Seccion("Acerca de") {
-                Fila("Aviso de privacidad", "Qué lee UniShip y qué guarda", "Abrir") { abrirWeb(ctx, Uri.parse("${BuildConfig.SERVER_URL}/privacidad")) }
+            Seccion("Privacidad") {
+                Fila("Aviso de privacidad", "Qué lee UniShip, qué guarda y con quién lo comparte", "Leer") { verPrivacidad() }
                 HorizontalDivider()
+                Fila("Borrar todos mis datos", "Paquetes, sesión de Mercado Libre, celular y respaldo en la nube", "Borrar") { borrarTodo = true }
+            }
+            Seccion("Acerca de") {
                 Fila("Revisar ahora", "Consulta todas las paqueterías en este momento", "Revisar") {
                     Rastreador.ahora(ctx); aviso("Revisando tus paquetes")
                 }
@@ -173,6 +177,24 @@ fun Ajustes(actividad: MainActivity, volver: () -> Unit) {
             Spacer(Modifier.height(24.dp))
         }
     }
+    if (borrarTodo) AlertDialog(
+        onDismissRequest = { borrarTodo = false },
+        title = { Text("¿Borrar todos tus datos?") },
+        text = { Text("Se eliminan tus paquetes y sus movimientos, la sesión de Mercado Libre y tus 4 dígitos. Si iniciaste sesión, también se borra tu respaldo en la nube y se cierra la sesión. No se puede deshacer.") },
+        confirmButton = {
+            TextButton(onClick = {
+                borrarTodo = false
+                tarea {
+                    if (Nube.usuario != null) { runCatching { Nube.borrar() }; Nube.cerrar(ctx); usuario = null }
+                    UniShipApp.repo.borrarTodo()
+                    UniShipApp.prefs.borrarTodo()
+                    androidx.core.app.NotificationManagerCompat.from(ctx).cancelAll()
+                    "Listo, se borró todo"
+                }
+            }) { Text("Borrar todo", color = MaterialTheme.colorScheme.error) }
+        },
+        dismissButton = { TextButton(onClick = { borrarTodo = false }) { Text("Cancelar", color = MaterialTheme.colorScheme.secondary) } }
+    )
     if (borrarNube) AlertDialog(
         onDismissRequest = { borrarNube = false },
         title = { Text("¿Borrar el respaldo?") },

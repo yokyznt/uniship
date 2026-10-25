@@ -25,15 +25,17 @@ object Navegador {
           var of = window.fetch;
           window.fetch = function(i, o){
             var u = (typeof i === 'string') ? i : (i && i.url) || '';
+            try { UniShip.url(u); } catch(e){}
             return of.apply(this, arguments).then(function(r){
               if (u.indexOf(f) >= 0) { try { r.clone().text().then(function(t){ UniShip.recibir(r.status, t); }); } catch(e){} }
               return r;
             });
           };
           var oo = XMLHttpRequest.prototype.open, os = XMLHttpRequest.prototype.send;
-          XMLHttpRequest.prototype.open = function(m, u){ this.__u = u; return oo.apply(this, arguments); };
+          XMLHttpRequest.prototype.open = function(m, u){ this.__u = u; try { UniShip.url(String(u)); } catch(e){} return oo.apply(this, arguments); };
           XMLHttpRequest.prototype.send = function(){
             var x = this;
+            x.addEventListener('error', function(){ if ((x.__u || '').indexOf(f) >= 0) { try { UniShip.recibir(0, 'error de red'); } catch(e){} } });
             x.addEventListener('load', function(){ if ((x.__u || '').indexOf(f) >= 0) { try { UniShip.recibir(x.status, x.responseText); } catch(e){} } });
             return os.apply(this, arguments);
           };
@@ -47,17 +49,36 @@ object Navegador {
         val web = WebView(app)
         web.settings.javaScriptEnabled = true
         web.settings.domStorageEnabled = true
+        web.settings.userAgentString = web.settings.userAgentString.replace("; wv)", ")").replace(Regex(" Version/\\d+\\.\\d+"), "")
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.REQUESTED_WITH_HEADER_ALLOW_LIST)) {
+            androidx.webkit.WebSettingsCompat.setRequestedWithHeaderOriginAllowList(web.settings, emptySet())
+        }
         web.addJavascriptInterface(object {
             @JavascriptInterface
+            fun url(u: String) {
+                if (com.yokis.uniship.BuildConfig.DEBUG) android.util.Log.d("UniShip", "pide ${u.take(140)}")
+            }
+
+            @JavascriptInterface
             fun recibir(estado: Int, texto: String) {
+                if (com.yokis.uniship.BuildConfig.DEBUG) android.util.Log.d("UniShip", "visto $filtro $estado ${texto.take(120)}")
                 if (aceptar(estado, texto)) resultado.complete(texto)
             }
         }, "UniShip")
         WebViewCompat.addDocumentStartJavaScript(web, gancho(filtro), setOf("*"))
-        web.webViewClient = WebViewClient()
+        web.webViewClient = object : WebViewClient() {
+            override fun onPageFinished(view: WebView?, u: String?) {
+                if (com.yokis.uniship.BuildConfig.DEBUG) android.util.Log.d("UniShip", "cargó $u")
+            }
+            override fun onReceivedHttpError(view: WebView?, req: android.webkit.WebResourceRequest?, res: android.webkit.WebResourceResponse?) {
+                if (com.yokis.uniship.BuildConfig.DEBUG && req?.isForMainFrame == true) android.util.Log.d("UniShip", "http ${res?.statusCode} ${req.url}")
+            }
+        }
         try {
             web.loadUrl(url)
-            withTimeoutOrNull(esperaMs) { resultado.await() }
+            withTimeoutOrNull(esperaMs) { resultado.await() }.also {
+                if (com.yokis.uniship.BuildConfig.DEBUG) android.util.Log.d("UniShip", "capturar $filtro -> ${it?.take(160) ?: "sin respuesta"}")
+            }
         } finally {
             web.stopLoading()
             web.removeJavascriptInterface("UniShip")

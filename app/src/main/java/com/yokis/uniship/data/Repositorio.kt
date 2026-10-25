@@ -63,6 +63,8 @@ class Repositorio(private val db: Db) {
         }
     }
 
+    suspend fun borrarTodo() = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) { db.clearAllTables() }
+
     suspend fun respaldo() = Respaldo(paquetes = paquetes.todos(), eventos = eventos.todos())
 
     suspend fun restaurar(r: Respaldo) = db.withTransaction {

@@ -32,7 +32,7 @@ fun Raiz(actividad: MainActivity) {
         val inicio = remember { if (l) "lista" else "bienvenida" }
         NavHost(nav, startDestination = inicio) {
             composable("bienvenida") {
-                Onboarding(alTerminar = {
+                Onboarding(verPrivacidad = { nav.navigate("privacidad") }, alTerminar = {
                     alcance.launch { UniShipApp.prefs.terminarOnboarding() }
                     nav.navigate("lista") { popUpTo("bienvenida") { inclusive = true } }
                 })
@@ -41,7 +41,8 @@ fun Raiz(actividad: MainActivity) {
                 Lista(
                     abrir = { nav.navigate("detalle/$it") },
                     agregar = { nav.navigate("agregar") },
-                    ajustes = { nav.navigate("ajustes") }
+                    ajustes = { nav.navigate("ajustes") },
+                    verPrivacidad = { nav.navigate("privacidad") }
                 )
             }
             composable("detalle/{id}", arguments = listOf(navArgument("id") { type = NavType.LongType })) {
@@ -65,7 +66,8 @@ fun Raiz(actividad: MainActivity) {
                     volver = { nav.popBackStack() }
                 )
             }
-            composable("ajustes") { Ajustes(actividad, volver = { nav.popBackStack() }) }
+            composable("ajustes") { Ajustes(actividad, volver = { nav.popBackStack() }, verPrivacidad = { nav.navigate("privacidad") }) }
+            composable("privacidad") { Privacidad(volver = { nav.popBackStack() }) }
         }
         LaunchedEffect(pendiente, listo) {
             val id = pendiente ?: return@LaunchedEffect

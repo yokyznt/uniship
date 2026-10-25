@@ -69,7 +69,7 @@ private val pasos = listOf(
 )
 
 @Composable
-fun Onboarding(alTerminar: () -> Unit) {
+fun Onboarding(verPrivacidad: () -> Unit, alTerminar: () -> Unit) {
     val ctx = LocalContext.current
     var i by rememberSaveable { mutableIntStateOf(0) }
     var esperando by remember { mutableStateOf(false) }
@@ -106,6 +106,12 @@ fun Onboarding(alTerminar: () -> Unit) {
                 Text(p.titulo, style = MaterialTheme.typography.headlineLarge)
                 Spacer(Modifier.height(16.dp))
                 Text(p.texto, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
+                if (n == 0 || n == 2) {
+                    Spacer(Modifier.height(8.dp))
+                    TextButton(onClick = verPrivacidad, contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp)) {
+                        Text("Leer el aviso de privacidad completo", color = MaterialTheme.colorScheme.secondary)
+                    }
+                }
             }
         }
         val p = pasos[i]
