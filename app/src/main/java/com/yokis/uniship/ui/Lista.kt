@@ -54,6 +54,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.draw.clip
@@ -293,27 +294,29 @@ fun Progreso(e: Estado) {
     val color = if (e == Estado.INCIDENCIA) Paleta.rojo else MaterialTheme.colorScheme.primary
     val vivo = e != Estado.ENTREGADO && e != Estado.SIN_DATOS
     val transicion = androidx.compose.animation.core.rememberInfiniteTransition(label = "avance")
-    val brillo by transicion.animateFloat(0f, 1f, androidx.compose.animation.core.infiniteRepeatable(androidx.compose.animation.core.tween(1600, easing = androidx.compose.animation.core.LinearEasing)), label = "brillo")
+    val brillo by transicion.animateFloat(0f, 1f, androidx.compose.animation.core.infiniteRepeatable(androidx.compose.animation.core.tween(1400, easing = androidx.compose.animation.core.LinearEasing)), label = "brillo")
     val avance = if (vivo) brillo else 0f
     Row(horizontalArrangement = Arrangement.spacedBy(5.dp), modifier = Modifier.fillMaxWidth()) {
         pasos.indices.forEach { i ->
-            val lleno = i <= paso && e != Estado.SIN_DATOS
+            val actual = vivo && i == paso
+            val lleno = e != Estado.SIN_DATOS && (i < paso || (i == paso && !vivo))
             Box(
                 Modifier.weight(1f).height(6.dp).clip(RoundedCornerShape(3.dp)).background(if (lleno) color else Paleta.gris)
-                    .then(if (vivo && lleno) Modifier.drawWithContent {
+                    .then(if (actual) Modifier.drawWithContent {
                         drawContent()
-                        val ancho = size.width
-                        val franja = 26.dp.toPx()
-                        val paso2 = franja * 2
-                        val corrimiento = avance * paso2
-                        var x = -paso2 + corrimiento
-                        while (x < ancho + franja) {
+                        val parte = size.width * 0.55f
+                        drawRect(color, size = androidx.compose.ui.geometry.Size(parte, size.height))
+                        val ancho = parte * 0.45f
+                        val x = -ancho + avance * (parte + ancho)
+                        clipRect(right = parte) {
                             drawRect(
-                                androidx.compose.ui.graphics.Color.White.copy(alpha = 0.32f),
+                                androidx.compose.ui.graphics.Brush.horizontalGradient(
+                                    listOf(androidx.compose.ui.graphics.Color.Transparent, androidx.compose.ui.graphics.Color.White.copy(alpha = 0.75f), androidx.compose.ui.graphics.Color.Transparent),
+                                    startX = x, endX = x + ancho
+                                ),
                                 topLeft = androidx.compose.ui.geometry.Offset(x, 0f),
-                                size = androidx.compose.ui.geometry.Size(franja * 0.55f, size.height)
+                                size = androidx.compose.ui.geometry.Size(ancho, size.height)
                             )
-                            x += paso2
                         }
                     } else Modifier)
             )

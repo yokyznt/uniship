@@ -5,7 +5,14 @@ import android.graphics.Paint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.outlined.CloseFullscreen
+import androidx.compose.material.icons.outlined.OpenInFull
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Remove
+import androidx.compose.material.icons.outlined.CenterFocusStrong
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -70,19 +77,65 @@ object Lugares {
     }
 }
 
+object Rutas {
+    private val prefs get() = UniShipApp.instancia.getSharedPreferences("rutas", Context.MODE_PRIVATE)
+
+    fun decodificar(p: String, precision: Double = 1e6): List<GeoPoint> {
+        val r = mutableListOf<GeoPoint>()
+        var i = 0
+        var lat = 0L
+        var lon = 0L
+        while (i < p.length) {
+            for (k in 0..1) {
+                var resultado = 0L
+                var corrimiento = 0
+                var b: Int
+                do {
+                    b = p[i++].code - 63
+                    resultado = resultado or ((b and 0x1f).toLong() shl corrimiento)
+                    corrimiento += 5
+                } while (b >= 0x20)
+                val d = if (resultado and 1L != 0L) (resultado shr 1).inv() else resultado shr 1
+                if (k == 0) lat += d else lon += d
+            }
+            r += GeoPoint(lat / precision, lon / precision)
+        }
+        return r
+    }
+
+    suspend fun trazar(puntos: List<GeoPoint>): List<GeoPoint> {
+        if (puntos.size < 2) return puntos
+        val coords = puntos.joinToString(";") { "%.5f,%.5f".format(java.util.Locale.US, it.longitude, it.latitude) }
+        prefs.getString(coords, null)?.let { return decodificar(it) }
+        val geo = withContext(Dispatchers.IO) {
+            runCatching {
+                val j = org.json.JSONObject(Http.get("https://router.project-osrm.org/route/v1/driving/$coords?overview=full&geometries=polyline6", mapOf("User-Agent" to "UniShip/1.3 (Android; com.yokis.uniship)")))
+                j.optJSONArray("routes")?.optJSONObject(0)?.optString("geometry")?.ifBlank { null }
+            }.getOrNull()
+        } ?: return puntos
+        prefs.edit().putString(coords, geo).apply()
+        return decodificar(geo)
+    }
+}
+
 @Composable
 fun Mapa(eventos: List<Evento>) {
     var puntos by remember { mutableStateOf<List<GeoPoint>>(emptyList()) }
+    var camino by remember { mutableStateOf<List<GeoPoint>>(emptyList()) }
+    var grande by remember { mutableStateOf(false) }
+    var mapa by remember { mutableStateOf<MapView?>(null) }
     val lugares = remember(eventos) { eventos.sortedBy { it.fecha }.mapNotNull { it.ubicacion }.fold(mutableListOf<String>()) { acc, l -> if (acc.lastOrNull() != l) acc += l; acc } }
     LaunchedEffect(lugares) {
         val r = mutableListOf<GeoPoint>()
-        for (l in lugares) Lugares.ubicar(l)?.let { g -> if (r.lastOrNull()?.let { it.distanceToAsDouble(g) < 500 } != true) { r += g; puntos = r.toList() } }
+        for (l in lugares) Lugares.ubicar(l)?.let { g -> if (r.lastOrNull()?.let { it.distanceToAsDouble(g) < 500 } != true) { r += g; puntos = r.toList(); camino = r.toList() } }
+        camino = Rutas.trazar(r)
     }
     if (puntos.isEmpty()) return
     val naranja = Paleta.naranjaFuerte.toArgb()
-    Box(Modifier.fillMaxWidth().height(210.dp).clip(RoundedCornerShape(22.dp))) {
+    val alto by androidx.compose.animation.core.animateDpAsState(if (grande) 440.dp else 230.dp, label = "alto")
+    Box(Modifier.fillMaxWidth().height(alto).clip(RoundedCornerShape(22.dp))) {
         AndroidView(
-            modifier = Modifier.fillMaxWidth().height(210.dp),
+            modifier = Modifier.fillMaxWidth().height(alto),
             factory = { c ->
                 Configuration.getInstance().userAgentValue = c.packageName
                 MapView(c).apply {
@@ -90,15 +143,35 @@ fun Mapa(eventos: List<Evento>) {
                     setMultiTouchControls(true)
                     zoomController.setVisibility(org.osmdroid.views.CustomZoomButtonsController.Visibility.NEVER)
                     isTilesScaledToDpi = true
+                    minZoomLevel = 4.0
+                    maxZoomLevel = 19.0
+                    @Suppress("ClickableViewAccessibility")
+                    setOnTouchListener { v, e ->
+                        if (e.actionMasked == android.view.MotionEvent.ACTION_DOWN || e.actionMasked == android.view.MotionEvent.ACTION_POINTER_DOWN) v.parent?.requestDisallowInterceptTouchEvent(true)
+                        if (e.actionMasked == android.view.MotionEvent.ACTION_UP || e.actionMasked == android.view.MotionEvent.ACTION_CANCEL) v.parent?.requestDisallowInterceptTouchEvent(false)
+                        false
+                    }
+                    mapa = this
                 }
             },
             update = { m ->
+                val nuevo = m.getTag(com.yokis.uniship.R.id.ruta_trazada) != camino
                 m.overlays.clear()
-                if (puntos.size > 1) m.overlays += Polyline(m).apply {
-                    setPoints(puntos)
-                    outlinePaint.color = naranja
-                    outlinePaint.strokeWidth = 9f
-                    outlinePaint.strokeCap = Paint.Cap.ROUND
+                if (camino.size > 1) {
+                    m.overlays += Polyline(m).apply {
+                        setPoints(camino)
+                        outlinePaint.color = android.graphics.Color.WHITE
+                        outlinePaint.strokeWidth = 16f
+                        outlinePaint.strokeCap = Paint.Cap.ROUND
+                        outlinePaint.strokeJoin = Paint.Join.ROUND
+                    }
+                    m.overlays += Polyline(m).apply {
+                        setPoints(camino)
+                        outlinePaint.color = naranja
+                        outlinePaint.strokeWidth = 10f
+                        outlinePaint.strokeCap = Paint.Cap.ROUND
+                        outlinePaint.strokeJoin = Paint.Join.ROUND
+                    }
                 }
                 puntos.forEachIndexed { i, g ->
                     m.overlays += Marker(m).apply {
@@ -108,13 +181,42 @@ fun Mapa(eventos: List<Evento>) {
                         title = lugares.getOrNull(i)
                     }
                 }
-                m.post {
-                    if (puntos.size == 1) { m.controller.setZoom(11.0); m.controller.setCenter(puntos[0]) }
-                    else m.zoomToBoundingBox(BoundingBox.fromGeoPoints(puntos).increaseByScale(1.4f), false)
+                if (nuevo) {
+                    m.setTag(com.yokis.uniship.R.id.ruta_trazada, camino)
+                    m.post {
+                        if (puntos.size == 1) { m.controller.setZoom(11.0); m.controller.setCenter(puntos[0]) }
+                        else m.zoomToBoundingBox(BoundingBox.fromGeoPoints(camino).increaseByScale(1.3f), false)
+                    }
                 }
                 m.invalidate()
             },
             onRelease = { it.onDetach() }
         )
+        androidx.compose.foundation.layout.Column(
+            Modifier.align(androidx.compose.ui.Alignment.TopEnd).padding(10.dp),
+            verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp)
+        ) {
+            BotonMapa(if (grande) androidx.compose.material.icons.Icons.Outlined.CloseFullscreen else androidx.compose.material.icons.Icons.Outlined.OpenInFull, if (grande) "Achicar mapa" else "Agrandar mapa") { grande = !grande }
+            BotonMapa(androidx.compose.material.icons.Icons.Outlined.Add, "Acercar") { mapa?.controller?.zoomIn() }
+            BotonMapa(androidx.compose.material.icons.Icons.Outlined.Remove, "Alejar") { mapa?.controller?.zoomOut() }
+            BotonMapa(androidx.compose.material.icons.Icons.Outlined.CenterFocusStrong, "Ver toda la ruta") {
+                mapa?.let { m -> if (camino.size > 1) m.zoomToBoundingBox(BoundingBox.fromGeoPoints(camino).increaseByScale(1.3f), true) else m.controller.animateTo(puntos[0], 11.0, 400L) }
+            }
+        }
+    }
+}
+
+@Composable
+private fun BotonMapa(icono: androidx.compose.ui.graphics.vector.ImageVector, desc: String, alPulsar: () -> Unit) {
+    androidx.compose.material3.Surface(
+        onClick = alPulsar,
+        shape = androidx.compose.foundation.shape.CircleShape,
+        color = Paleta.blanco,
+        shadowElevation = 3.dp,
+        modifier = Modifier.size(40.dp)
+    ) {
+        Box(contentAlignment = androidx.compose.ui.Alignment.Center) {
+            androidx.compose.material3.Icon(icono, desc, tint = Paleta.naranjaTexto, modifier = Modifier.size(20.dp))
+        }
     }
 }
