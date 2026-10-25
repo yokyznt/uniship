@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.outlined.CloseFullscreen
 import androidx.compose.material.icons.outlined.OpenInFull
 import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.MyLocation
 import androidx.compose.material.icons.outlined.Remove
 import androidx.compose.material.icons.outlined.CenterFocusStrong
 import androidx.compose.runtime.Composable
@@ -124,6 +125,35 @@ fun Mapa(eventos: List<Evento>) {
     var camino by remember { mutableStateOf<List<GeoPoint>>(emptyList()) }
     var grande by remember { mutableStateOf(false) }
     var mapa by remember { mutableStateOf<MapView?>(null) }
+    val ctx = androidx.compose.ui.platform.LocalContext.current
+    fun permitido() = androidx.core.content.ContextCompat.checkSelfPermission(ctx, android.Manifest.permission.ACCESS_COARSE_LOCATION) == android.content.pm.PackageManager.PERMISSION_GRANTED
+    var conUbicacion by remember { mutableStateOf(permitido()) }
+    var irAMi by remember { mutableStateOf(false) }
+    val pedir = androidx.activity.compose.rememberLauncherForActivityResult(androidx.activity.result.contract.ActivityResultContracts.RequestMultiplePermissions()) { r ->
+        conUbicacion = r.values.any { it }
+        irAMi = conUbicacion
+    }
+    val yo = remember(mapa, conUbicacion) {
+        val m = mapa
+        if (m == null || !conUbicacion) null else org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay(org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider(m.context).apply {
+            addLocationSource(android.location.LocationManager.NETWORK_PROVIDER)
+        }, m).apply {
+            val punto = androidx.core.content.ContextCompat.getDrawable(m.context, com.yokis.uniship.R.drawable.ic_yo)!!
+            val bmp = android.graphics.Bitmap.createBitmap(punto.intrinsicWidth, punto.intrinsicHeight, android.graphics.Bitmap.Config.ARGB_8888)
+            punto.setBounds(0, 0, bmp.width, bmp.height); punto.draw(android.graphics.Canvas(bmp))
+            setPersonIcon(bmp); setDirectionIcon(bmp)
+            setPersonAnchor(0.5f, 0.5f); setDirectionAnchor(0.5f, 0.5f)
+            isDrawAccuracyEnabled = true
+            enableMyLocation()
+        }
+    }
+    androidx.compose.runtime.DisposableEffect(yo) { onDispose { yo?.disableMyLocation() } }
+    LaunchedEffect(irAMi, yo) {
+        if (irAMi && yo != null) {
+            irAMi = false
+            yo.runOnFirstFix { mapa?.post { yo.myLocation?.let { mapa?.controller?.animateTo(it, 13.0, 500L) } } }
+        }
+    }
     val lugares = remember(eventos) { eventos.sortedBy { it.fecha }.mapNotNull { it.ubicacion }.fold(mutableListOf<String>()) { acc, l -> if (acc.lastOrNull() != l) acc += l; acc } }
     LaunchedEffect(lugares) {
         val r = mutableListOf<GeoPoint>()
@@ -132,7 +162,7 @@ fun Mapa(eventos: List<Evento>) {
     }
     if (puntos.isEmpty()) return
     val naranja = Paleta.naranjaFuerte.toArgb()
-    val alto by androidx.compose.animation.core.animateDpAsState(if (grande) 440.dp else 230.dp, label = "alto")
+    val alto by androidx.compose.animation.core.animateDpAsState(if (grande) 460.dp else 260.dp, label = "alto")
     Box(Modifier.fillMaxWidth().height(alto).clip(RoundedCornerShape(22.dp))) {
         AndroidView(
             modifier = Modifier.fillMaxWidth().height(alto),
@@ -181,6 +211,7 @@ fun Mapa(eventos: List<Evento>) {
                         title = lugares.getOrNull(i)
                     }
                 }
+                yo?.let { m.overlays += it }
                 if (nuevo) {
                     m.setTag(com.yokis.uniship.R.id.ruta_trazada, camino)
                     m.post {
@@ -194,11 +225,15 @@ fun Mapa(eventos: List<Evento>) {
         )
         androidx.compose.foundation.layout.Column(
             Modifier.align(androidx.compose.ui.Alignment.TopEnd).padding(10.dp),
-            verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp)
+            verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(6.dp)
         ) {
             BotonMapa(if (grande) androidx.compose.material.icons.Icons.Outlined.CloseFullscreen else androidx.compose.material.icons.Icons.Outlined.OpenInFull, if (grande) "Achicar mapa" else "Agrandar mapa") { grande = !grande }
             BotonMapa(androidx.compose.material.icons.Icons.Outlined.Add, "Acercar") { mapa?.controller?.zoomIn() }
             BotonMapa(androidx.compose.material.icons.Icons.Outlined.Remove, "Alejar") { mapa?.controller?.zoomOut() }
+            BotonMapa(androidx.compose.material.icons.Icons.Outlined.MyLocation, "Mi ubicación") {
+                if (!conUbicacion) pedir.launch(arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION))
+                else yo?.myLocation?.let { mapa?.controller?.animateTo(it, 13.0, 500L) } ?: run { irAMi = true }
+            }
             BotonMapa(androidx.compose.material.icons.Icons.Outlined.CenterFocusStrong, "Ver toda la ruta") {
                 mapa?.let { m -> if (camino.size > 1) m.zoomToBoundingBox(BoundingBox.fromGeoPoints(camino).increaseByScale(1.3f), true) else m.controller.animateTo(puntos[0], 11.0, 400L) }
             }
@@ -213,7 +248,7 @@ private fun BotonMapa(icono: androidx.compose.ui.graphics.vector.ImageVector, de
         shape = androidx.compose.foundation.shape.CircleShape,
         color = Paleta.blanco,
         shadowElevation = 3.dp,
-        modifier = Modifier.size(40.dp)
+        modifier = Modifier.size(38.dp)
     ) {
         Box(contentAlignment = androidx.compose.ui.Alignment.Center) {
             androidx.compose.material3.Icon(icono, desc, tint = Paleta.naranjaTexto, modifier = Modifier.size(20.dp))
