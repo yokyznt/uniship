@@ -85,7 +85,12 @@ class Rastreador(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx, 
             repo.paquetes.actualizar(
                 actual.copy(
                     fallos = fallos,
-                    ultimoEvento = if (repo.eventos.listar(actual.id).isEmpty() && aviso != null) aviso else actual.ultimoEvento,
+                    ultimoEvento = when {
+                        repo.eventos.listar(actual.id).isNotEmpty() -> actual.ultimoEvento
+                        aviso != null -> aviso
+                        actual.ultimoEvento?.contains("dígitos") == true -> "La paquetería todavía no registra movimientos"
+                        else -> actual.ultimoEvento
+                    },
                     estado = if (fallos >= 3 && actual.estado == Estado.PENDIENTE) Estado.SIN_DATOS else actual.estado
                 )
             )

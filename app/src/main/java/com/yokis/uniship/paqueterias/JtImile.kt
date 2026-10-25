@@ -25,15 +25,15 @@ object JtExpress : Paqueteria {
         val url = "https://official.jtjms-mx.com/official/logisticsTracking/v3/getDetailByWaybillNo?waybillNo=${URLEncoder.encode(guia, "UTF-8")}&phoneVerify=$cel"
         val j = JSONObject(Http.get(url, mapOf("langType" to "ES", "timezone" to "GMT-0600", "Origin" to "https://www.jtexpress.mx", "Referer" to "https://www.jtexpress.mx/")))
         if (j.optInt("code") != 1) throw SinDatos(j.optString("msg"))
-        val datos = j.optJSONArray("data")?.optJSONObject(0) ?: return@withContext emptyList()
+        val datos = j.optJSONObject("data") ?: j.optJSONArray("data")?.optJSONObject(0) ?: return@withContext emptyList()
         val det = datos.optJSONArray("details") ?: return@withContext emptyList()
         (0 until det.length()).mapNotNull { i ->
             val d = det.getJSONObject(i)
             val crudo = d.optString("customerTracking").ifBlank { d.optString("waybillTrackingContent") }.ifBlank { d.optString("scanTypeName") }
             val ciudad = lugar.find(crudo)?.groupValues?.get(1)?.ifBlank { null } ?: d.optString("scanNetworkCity").ifBlank { null }
-            val texto = crudo.replace(lugar, "").replace(Regex("【\\s*】"), "").trim().ifBlank { d.optString("scanTypeName") }
+            val texto = crudo.replace(lugar, "").replace(Regex("【\\s*】"), "").replace(Regex("\\.?\\s*Si requieres mayor informaci[oó]n.*$"), "").replace(Regex("La persona que recibi[oó] el env[ií]o\\s*\\.?"), "").replace("【", " ").replace("】", " ").replace(Regex("\\s+"), " ").trim().ifBlank { d.optString("scanTypeName") }
             val fecha = Fechas.con(d.optString("scanTime"), "yyyy-MM-dd HH:mm:ss") ?: return@mapNotNull null
-            val tipo = d.optString("scanTypeName")
+            val tipo = d.optString("scanTypeName").ifBlank { d.optString("status") }
             Movimiento(fecha, texto, ciudad, Clasificador.estado("$tipo $texto"))
         }
     }

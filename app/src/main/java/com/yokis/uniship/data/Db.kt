@@ -70,6 +70,9 @@ interface EventoDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertarTodos(e: List<Evento>)
+
+    @Query("DELETE FROM eventos WHERE paqueteId = :id")
+    suspend fun borrarDe(id: Long)
 }
 
 @Database(entities = [Paquete::class, Evento::class], version = 2, exportSchema = true)
