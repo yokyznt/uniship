@@ -86,6 +86,13 @@ fun Ajustes(actividad: MainActivity, volver: () -> Unit, verPrivacidad: () -> Un
         }
     }
 
+    val exportar = androidx.activity.compose.rememberLauncherForActivityResult(androidx.activity.result.contract.ActivityResultContracts.CreateDocument("application/json")) { uri ->
+        if (uri != null) tarea { val n = com.yokis.uniship.data.Archivo.exportar(ctx, uri); "Guardé $n paquetes en el archivo" }
+    }
+    val importar = androidx.activity.compose.rememberLauncherForActivityResult(androidx.activity.result.contract.ActivityResultContracts.OpenDocument()) { uri ->
+        if (uri != null) tarea { val n = com.yokis.uniship.data.Archivo.importar(ctx, uri); Rastreador.ahora(ctx); "Importé $n paquetes" }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -145,6 +152,11 @@ fun Ajustes(actividad: MainActivity, volver: () -> Unit, verPrivacidad: () -> Un
                         alcance.launch { abrirWeb(ctx, MercadoLibre.urlAutorizacion()) }
                     }
                 }
+            }
+            Seccion("Archivo de respaldo") {
+                Fila("Exportar mis paquetes", "Guarda un archivo con tus paquetes y movimientos (por ejemplo en Descargas o Drive)", "Exportar") { exportar.launch(com.yokis.uniship.data.Archivo.nombre()) }
+                HorizontalDivider()
+                Fila("Importar un respaldo", "Carga un archivo exportado desde UniShip", "Importar") { importar.launch(arrayOf("application/json", "application/octet-stream", "text/plain")) }
             }
             Seccion("Respaldo") {
                 val u = usuario

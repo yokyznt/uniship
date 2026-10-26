@@ -29,8 +29,8 @@ android {
         applicationId = "com.yokis.uniship"
         minSdk = 26
         targetSdk = 36
-        versionCode = 4
-        versionName = "1.3.0"
+        versionCode = 5
+        versionName = "1.4.0"
         buildConfigField("String", "SERVER_URL", "\"${cfg("UNISHIP_SERVER", "https://uniship-xi.vercel.app")}\"")
         buildConfigField("String", "ML_CLIENT_ID", "\"${cfg("ML_CLIENT_ID")}\"")
         buildConfigField("boolean", "FIREBASE", firebase.toString())
@@ -101,6 +101,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("org.jsoup:jsoup:1.21.2")
     implementation("org.osmdroid:osmdroid-android:6.1.20")
+    implementation("androidx.glance:glance-appwidget:1.1.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.10.2")

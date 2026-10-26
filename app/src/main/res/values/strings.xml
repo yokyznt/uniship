@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">UniShip</string>
     <string name="lector">UniShip: detectar guías de tus compras</string>
+    <string name="widget_desc">Tus paquetes en camino</string>
 </resources>
