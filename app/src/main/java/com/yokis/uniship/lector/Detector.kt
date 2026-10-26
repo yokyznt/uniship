@@ -1,6 +1,7 @@
 package com.yokis.uniship.lector
 
 import android.content.Context
+import com.yokis.uniship.Notificador
 import com.yokis.uniship.UniShipApp
 import com.yokis.uniship.data.Fuente
 import com.yokis.uniship.data.Origen
@@ -84,6 +85,9 @@ object Detector {
         val destino: Paquete = agregados.firstOrNull()
             ?: repo.paquetes.ultimoSinGuia(l.tienda)
             ?: Paquete(titulo = "Pedido de ${l.tienda}", tienda = l.tienda, origen = Origen.NOTIFICACION).let { it.copy(id = repo.paquetes.insertar(it)) }
+        if (destino.guia == null && agregados.isEmpty() && Clasificador.estado(l.texto).let { it == com.yokis.uniship.data.Estado.EN_TRANSITO || it == com.yokis.uniship.data.Estado.EN_REPARTO }) {
+            Notificador.sinGuia(ctx, destino, l.texto.take(200))
+        }
         val descripcion = l.texto.take(240)
         val previo = repo.eventos.listar(destino.id).firstOrNull()
         if (previo != null && previo.descripcion == descripcion) return

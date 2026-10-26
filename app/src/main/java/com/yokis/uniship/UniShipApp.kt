@@ -23,6 +23,11 @@ class UniShipApp : Application() {
                 description = "Avisa cada vez que un paquete cambia de estado o de ciudad"
             }
         )
+        getSystemService(NotificationManager::class.java).createNotificationChannel(
+            NotificationChannel(Notificador.CANAL_AVISOS, "Avisos de pedidos", NotificationManager.IMPORTANCE_DEFAULT).apply {
+                description = "Pedidos que ya se enviaron pero todavía no tienen guía"
+            }
+        )
         Rastreador.programar(this)
     }
 
